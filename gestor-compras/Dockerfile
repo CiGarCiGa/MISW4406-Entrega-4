@@ -1,0 +1,10 @@
+FROM python:3.10
+
+EXPOSE 5001/tcp
+
+COPY gestor-compras/requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+CMD [ "flask", "--app", "gestor-compras/src/api", "run", "--host=0.0.0.0", "-p", "5001"]
