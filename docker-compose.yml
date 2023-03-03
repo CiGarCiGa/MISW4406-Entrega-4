@@ -118,3 +118,21 @@ services:
       - pulsar
     ports:
       - "5000:5000"
+
+  # Servicio Gestor Compras
+  gestor-compras:
+    container_name: gestor-compras
+    hostname: gestor-compras
+    build:
+      context: ./
+      dockerfile: gestor-compras/Dockerfile
+    profiles: ["alpes", "gestor-compras"]
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+    networks:
+      - pulsar
+    ports:
+      - "5001:5001"

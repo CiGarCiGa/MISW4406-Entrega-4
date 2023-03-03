@@ -14,11 +14,11 @@ def comenzar_consumidor(app):
     de procesos y threads como Celery.
     """
 
-    #import threading
-    #import aeroalpes.modulos.cliente.infraestructura.consumidores as cliente
+    import threading
+    import src.modulos.producto.infraestructura.consumidores as producto
 
     # Suscripción a eventos
-    #threading.Thread(target=cliente.suscribirse_a_eventos).start()
+    threading.Thread(target=producto.suscribirse_a_eventos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -29,10 +29,10 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Importa Blueprints
-    from . import cliente
+    from . import producto
 
     # Registro de Blueprints
-    app.register_blueprint(cliente.bp)
+    app.register_blueprint(producto.bp)
 
     @app.route("/spec")
     def spec():
