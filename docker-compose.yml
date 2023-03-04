@@ -1,15 +1,11 @@
-
 version: '3'
 networks:
   pulsar:
-    driver: bridge
-  sidecar:
     driver: bridge
 services:
 # Start zookeeper
   zookeeper:
     image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
     container_name: zookeeper
     restart: on-failure
     networks:
@@ -33,7 +29,6 @@ services:
     container_name: pulsar-init
     hostname: pulsar-init
     image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
     networks:
       - pulsar
     command: >
@@ -50,7 +45,6 @@ services:
 # Start bookie
   bookie:
     image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
     container_name: bookie
     restart: on-failure
     networks:
@@ -62,8 +56,6 @@ services:
     depends_on:
       zookeeper:
         condition: service_healthy
-      pulsar-init:
-        condition: service_completed_successfully
   # Map the local directory to the container to avoid bookie startup failure due to insufficient container disks.
     volumes:
       - ./data/bookkeeper:/pulsar/data/bookkeeper
@@ -73,7 +65,6 @@ services:
 # Start broker
   broker:
     image: apachepulsar/pulsar:latest
-    profiles: ["pulsar"]
     container_name: broker
     hostname: broker
     restart: on-failure
@@ -87,7 +78,7 @@ services:
       - managedLedgerDefaultWriteQuorum=1
       - managedLedgerDefaultAckQuorum=1
       - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
+      - advertisedListeners=external:pulsar://broker:6650
     depends_on:
       zookeeper:
         condition: service_healthy
@@ -96,8 +87,6 @@ services:
     ports:
       - "6650:6650"
       - "8080:8080"
-    volumes:
-      - ./connectors/pulsar:/pulsar/connectors
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf
       &&  exec bin/pulsar broker"
 
@@ -108,7 +97,6 @@ services:
     build:
       context: ./
       dockerfile: admin-productos/Dockerfile
-    profiles: ["alpes", "admin-productos"]
     depends_on:
       - broker
     environment:
@@ -118,3 +106,19 @@ services:
       - pulsar
     ports:
       - "5000:5000"
+
+  # Servicio pulsar test
+  pulsar-testing:
+    container_name: pulsar-testing
+    hostname: pulsar-testing
+    build:
+      context: ./
+      dockerfile: pulsar-testing/Dockerfile
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+    networks:
+      - pulsar
+    command: tail -f /dev/null
