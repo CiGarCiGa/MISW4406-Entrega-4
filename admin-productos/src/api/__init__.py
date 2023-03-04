@@ -29,17 +29,10 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Importa Blueprints
-    from . import cliente
+    from . import inventario
 
     # Registro de Blueprints
-    app.register_blueprint(cliente.bp)
-
-    @app.route("/spec")
-    def spec():
-        swag = swagger(app)
-        swag['info']['version'] = "1.0"
-        swag['info']['title'] = "My API"
-        return jsonify(swag)
+    app.register_blueprint(inventario.bp)
 
     @app.route("/health")
     def health():
