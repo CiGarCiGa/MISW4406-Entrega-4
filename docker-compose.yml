@@ -136,3 +136,23 @@ services:
       - pulsar
     ports:
       - "5001:5001"
+
+  # Aux tool
+  publisher-tool:
+    container_name: publisher-tool
+    hostname: publisher-tool
+    build:
+      context: ./
+      dockerfile: publisher-tool/Dockerfile
+    profiles: [ "publisher-tool"]
+    depends_on:
+      - broker
+    networks:
+      - pulsar
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_APPLICATION_JSON: '{ "spring.pulsar.client.service-url"  : "pulsar://broker:6650" }'
+      - JVM_OPTS: >
+         --add-opens java.base/sun.net=ALL-UNNAMED 
+         --add-opens java.management/sun.management=ALL-UNNAMED

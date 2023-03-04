@@ -1,0 +1,6 @@
+server:
+    port : ${PORT:8083}
+spring:
+    pulsar:
+        client:
+            service-url: pulsar://localhost:6650
