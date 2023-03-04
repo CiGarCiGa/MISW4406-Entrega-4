@@ -1,4 +1,3 @@
-
 version: '3'
 networks:
   pulsar:
@@ -87,7 +86,7 @@ services:
       - managedLedgerDefaultWriteQuorum=1
       - managedLedgerDefaultAckQuorum=1
       - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
+      - advertisedListeners=external:pulsar://0.0.0.0:6650
     depends_on:
       zookeeper:
         condition: service_healthy
@@ -114,7 +113,45 @@ services:
     environment:
       - AEROALPES_ADDRESS=aeroalpes
       - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
     networks:
       - pulsar
     ports:
       - "5000:5000"
+
+  # Servicio Gestor Compras
+  gestor-compras:
+    container_name: gestor-compras
+    hostname: gestor-compras
+    build:
+      context: ./
+      dockerfile: gestor-compras/Dockerfile
+    profiles: ["alpes", "gestor-compras"]
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+    networks:
+      - pulsar
+    ports:
+      - "5001:5001"
+
+  # Servicio Bodegas internas
+  bodegas-internas:
+    container_name: bodegas-internas
+    hostname: bodegas-internas
+    build:
+      context: ./
+      dockerfile: bodegas-internas/Dockerfile
+    profiles: ["alpes", "bodegas-internas"]
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+    networks:
+      - pulsar
+    ports:
+      - "5002:5002"
