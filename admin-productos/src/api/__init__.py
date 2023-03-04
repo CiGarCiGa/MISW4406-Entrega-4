@@ -6,7 +6,6 @@ from flask_swagger import swagger
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-
 def comenzar_consumidor(app):
     """
     Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
@@ -18,7 +17,7 @@ def comenzar_consumidor(app):
     import src.modulos.producto.infraestructura.consumidores as producto
 
     # Suscripción a eventos
-    threading.Thread(target=producto.suscribirse_a_eventos).start()
+    threading.Thread(target=producto.suscribirse_a_comandos).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -30,6 +29,10 @@ def create_app(configuracion={}):
 
      # Importa Blueprints
     from . import producto
+
+    with app.app_context():
+        if not app.config.get('TESTING'):
+            comenzar_consumidor(app)
 
     # Registro de Blueprints
     app.register_blueprint(producto.bp)

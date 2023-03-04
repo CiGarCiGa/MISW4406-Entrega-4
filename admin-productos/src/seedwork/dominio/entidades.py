@@ -32,7 +32,7 @@ class Entidad:
         if not IdEntidadEsInmutable(self).es_valido():
             raise IdDebeSerInmutableExcepcion()
         self._id = self.siguiente_id()
-        
+
 
 @dataclass
 class AgregacionRaiz(Entidad, ValidarReglasMixin):
@@ -44,7 +44,7 @@ class AgregacionRaiz(Entidad, ValidarReglasMixin):
 
         if evento_compensacion:
             self.eventos_compensacion.append(evento_compensacion)
-    
+
     def limpiar_eventos(self):
         self.eventos = list()
         self.eventos_compensacion = list()

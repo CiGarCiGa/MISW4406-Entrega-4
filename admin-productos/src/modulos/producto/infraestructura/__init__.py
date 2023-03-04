@@ -6,8 +6,8 @@ import logging
 import traceback
 import datetime
 
-from src.modulos.vuelos.infraestructura.schema.v1.eventos import EventoReservaCreada
-from src.modulos.vuelos.infraestructura.schema.v1.comandos import ComandoCrearReserva
+from src.modulos.producto.infraestructura.schema.v1.eventos import EventoProductoCreado
+from src.modulos.producto.infraestructura.schema.v1.comandos import ComandoCrearProducto
 
 
 #from aeroalpes.modulos.vuelos.infraestructura.proyecciones import ProyeccionReservasLista, ProyeccionReservasTotales
