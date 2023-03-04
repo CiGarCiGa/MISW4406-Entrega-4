@@ -46,6 +46,3 @@ def suscribirse_a_comandos():
         traceback.print_exc()
         if cliente:
             cliente.close()
-
-def run():
-    suscribirse_a_eventos()

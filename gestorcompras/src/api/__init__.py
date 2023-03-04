@@ -15,10 +15,12 @@ def comenzar_consumidor(app):
     """
 
     #import threading
-    #import aeroalpes.modulos.cliente.infraestructura.consumidores as cliente
+    from src.modulos.inventario.infraestructura.consumidores import suscribirse_a_eventos
 
     # Suscripción a eventos
     #threading.Thread(target=cliente.suscribirse_a_eventos).start()
+
+    suscribirse_a_eventos()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -33,6 +35,9 @@ def create_app(configuracion={}):
 
     # Registro de Blueprints
     app.register_blueprint(inventario.bp)
+
+    from src.modulos.inventario.infraestructura.consumidores import suscribirse_a_eventos
+    suscribirse_a_eventos()
 
     @app.route("/health")
     def health():
