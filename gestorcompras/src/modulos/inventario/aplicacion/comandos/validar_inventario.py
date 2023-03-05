@@ -22,7 +22,7 @@ class ValidarInventarioHandler():
             ,   fecha_creacion=comando.fecha_creacion
             ,   id=comando.id
             ,   productos=comando.productos_orden)
-
+        print('antes de mapeador orden')
         mapeador = MapeadorOrden()
         orden: Orden = mapeador.dto_a_entidad(orden_dto)
         orden.validar_inventario(orden)

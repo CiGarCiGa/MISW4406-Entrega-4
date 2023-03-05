@@ -6,14 +6,11 @@ from flask_swagger import swagger
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+def registrar_handlers():
+    import src.modulos.inventario.aplicacion
+
 
 def comenzar_consumidor(app):
-    """
-    Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
-    threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
-    de procesos y threads como Celery.
-    """
-
     import threading
     import src.modulos.inventario.infraestructura.consumidores as cliente
     # Suscripción a eventos
@@ -34,6 +31,7 @@ def create_app(configuracion={}):
     # Registro de Blueprints
     app.register_blueprint(inventario.bp)
 
+    registrar_handlers()
     comenzar_consumidor(app)
 
     @app.route("/health")

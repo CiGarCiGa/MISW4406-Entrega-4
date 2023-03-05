@@ -3,6 +3,7 @@ from src.seedwork.dominio.repositorios import Mapeador as RepMap
 from src.modulos.inventario.dominio.entidades import Orden
 from src.modulos.inventario.dominio.objetos_valor import Producto, ProductoOrden
 from .dto import OrdenDTO, ProductoDTO
+from abc import ABC
 
 class MapeadorOrdenDTOJson(AppMap):
     def _procesar_orden(self, orden: dict) -> ProductoOrden:
@@ -25,7 +26,7 @@ class MapeadorOrdenDTOJson(AppMap):
     def dto_a_externo(self, dto: OrdenDTO) -> dict:
         return dto.__dict__
 
-class MapeadorOrden(RepMap):
+class MapeadorOrden(ABC):
     _FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
 
     def _procesar_producto_orden(self, producto_orden_dto: OrdenDTO) -> ProductoOrden:
