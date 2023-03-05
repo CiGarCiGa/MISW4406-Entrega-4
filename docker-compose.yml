@@ -141,6 +141,26 @@ services:
     volumes:
       - ./data/mysql/gestor-compra:/var/lib/mysql
 
+  # MySQL8
+  db-bodegas-internas:
+    image: mysql:8
+    hostname: db-boegas-internas
+    container_name: db-bodegas-internas
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=bodegas-internas
+      - MYSQL_ROOT_PASSWORD=adminadmin
+      - MYSQL_TCP_PORT=3310
+    profiles: ["db"]
+    networks:
+      - pulsar
+    ports:
+      - '3310:3310'
+    volumes:
+      - ./data/mysql/bodegas-internas:/var/lib/mysql
+
   # Servicio Admin. Productos
   admin-productos:
     container_name: admin-productos
@@ -185,3 +205,26 @@ services:
       - pulsar
     ports:
       - "5001:5001"
+
+  # Servicio Bodegas internas
+  bodegas-internas:
+    container_name: bodegas-internas
+    hostname: bodegas-internas
+    build:
+      context: ./
+      dockerfile: bodegas-internas/Dockerfile
+    profiles: ["alpes", "bodegas-internas"]
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+      - DB_USERNAME=root
+      - DB_PASSWORD=adminadmin
+      - DB_HOSTNAME=db-bodegas-internas
+      - DB_PORT=3310
+    networks:
+      - pulsar
+    ports:
+      - "5002:5002"
