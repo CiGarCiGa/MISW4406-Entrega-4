@@ -3,7 +3,7 @@ version: '3'
 networks:
   pulsar:
     driver: bridge
-  sidecar:
+  productos:
     driver: bridge
 services:
 # Start zookeeper
@@ -87,7 +87,7 @@ services:
       - managedLedgerDefaultWriteQuorum=1
       - managedLedgerDefaultAckQuorum=1
       - advertisedAddress=broker
-      - advertisedListeners=external:pulsar://127.0.0.1:6650
+      - advertisedListeners=external:pulsar://broker:6650
     depends_on:
       zookeeper:
         condition: service_healthy
@@ -100,6 +100,46 @@ services:
       - ./connectors/pulsar:/pulsar/connectors
     command: bash -c "bin/apply-config-from-env.py conf/broker.conf
       &&  exec bin/pulsar broker"
+
+  # MySQL8
+  db-productos:
+    image: mysql:8
+    hostname: db-productos
+    container_name: db-productos
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=productos
+      - MYSQL_ROOT_PASSWORD=adminadmin
+    profiles: ["db"]
+    networks:
+      - pulsar
+    ports:
+      - '3306:3306'
+    volumes:
+      - ./data/mysql/productos:/var/lib/mysql
+      - ./admin-productos/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  # MySQL8
+  db-gestor-compra:
+    image: mysql:8
+    hostname: db-gestor-compra
+    container_name: db-gestor-compra
+    cap_add:
+      - SYS_NICE
+    restart: always
+    environment:
+      - MYSQL_DATABASE=gestor-compra
+      - MYSQL_ROOT_PASSWORD=adminadmin
+      - MYSQL_TCP_PORT=3307
+    profiles: ["db"]
+    networks:
+      - pulsar
+    ports:
+      - '3307:3307'
+    volumes:
+      - ./data/mysql/gestor-compra:/var/lib/mysql
 
   # Servicio Admin. Productos
   admin-productos:
@@ -114,7 +154,34 @@ services:
     environment:
       - AEROALPES_ADDRESS=aeroalpes
       - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+      - DB_USERNAME=root
+      - DB_PASSWORD=adminadmin
+      - DB_HOSTNAME=db-productos
     networks:
       - pulsar
     ports:
       - "5000:5000"
+
+  # Servicio Gestor Compras
+  gestor-compra:
+    container_name: gestor-compra
+    hostname: gestor-compra
+    build:
+      context: ./
+      dockerfile: gestor-compra/Dockerfile
+    profiles: ["alpes", "gestor-compra"]
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+      - DB_USERNAME=root
+      - DB_PASSWORD=adminadmin
+      - DB_HOSTNAME=db-gestor-compra
+      - DB_PORT=3307
+    networks:
+      - pulsar
+    ports:
+      - "5001:5001"
