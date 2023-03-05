@@ -43,3 +43,4 @@ class Mapeador(ABC):
     @abstractmethod
     def dto_a_entidad(self, dto: any) -> Entidad:
         ...
+    

@@ -69,9 +69,8 @@ class EventoIntegracion(Record):
     service_name = String()
 
 class ComandoReservarProductoPayload(Record):
-    id_producto = String()
-    cantidad = Integer()
-    id_compra= String()
+    productos_cantidades = String()
+    id_compra = String()
 
 class ComandoReservarProducto(EventoIntegracion):
     data = ComandoReservarProductoPayload()

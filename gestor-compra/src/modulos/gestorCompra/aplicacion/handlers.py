@@ -10,22 +10,6 @@ class HandlerProductoIntegracion(Handler):
         despachador.publicar_evento(evento, 'eventos-compra')
 
     @staticmethod
-    def handle_compra_cancelado(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-compra')
-
-    @staticmethod
-    def handle_compra_aprobado(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-compra')
-
-    @staticmethod
-    def handle_compra_pagado(evento):
-        despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-compra')
-
-
-    @staticmethod
     def handle_reservar_producto(evento):
         despachador = Despachador()
         despachador.publicar_evento(evento, 'comandos-producto')
