@@ -28,7 +28,7 @@ def suscribirse_a_eventos(app=None):
         if cliente:
             cliente.close()
 
-def suscribirse_a_comandos():
+def suscribirse_a_comandos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://0.0.0.0:6650')
