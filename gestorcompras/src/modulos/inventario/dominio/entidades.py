@@ -12,6 +12,6 @@ class Orden(AgregacionRaiz):
 
     def validar_inventario(self, orden: Orden):
         self.id_cliente = orden.id_cliente
-        self.productos = orden.estado
+        self.productos = orden.productos
 
         self.agregar_evento(InventarioValidado(id_orden=self.id, id_cliente=self.id_cliente))

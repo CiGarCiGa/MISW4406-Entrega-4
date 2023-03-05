@@ -1,16 +1,11 @@
 import src.seedwork.presentacion.api as api
 import json
-from src.modulos.inventario.aplicacion.servicios import ServicioReserva
-from src.modulos.inventario.aplicacion.dto import ReservaDTO
 from src.seedwork.dominio.excepciones import ExcepcionDominio
 
 from flask import request, Response
 
 from src.modulos.inventario.aplicacion.mapeadores import MapeadorOrdenDTOJson
 from src.modulos.inventario.aplicacion.comandos.validar_inventario import ValidarInventario
-from src.modulos.inventario.aplicacion.queries.obtener_reserva import ObtenerReserva
-from src.seedwork.aplicacion.comandos import ejecutar_commando
-from src.seedwork.aplicacion.queries import ejecutar_query
 
 bp = api.crear_blueprint('inventario', '/inventario')
 
@@ -21,12 +16,12 @@ def validar_inventario(id=None):
 
         map_orden = MapeadorOrdenDTOJson()
         orden_dto = map_orden.externo_a_dto(orden_dict)
-
-        comando = CrearReserva(reserva_dto.fecha_creacion, reserva_dto.fecha_actualizacion, reserva_dto.id, reserva_dto.itinerarios)
+        print('despues de externo a dto')
+        comando = ValidarInventario(orden_dto.fecha_creacion, orden_dto.fecha_actualizacion, orden_dto.id, orden_dto.productos)
         
         # TODO Reemplaze es todo código sincrono y use el broker de eventos para propagar este comando de forma asíncrona
         # Revise la clase Despachador de la capa de infraestructura
-        ejecutar_commando(comando)
+        #ejecutar_commando(comando)
         
         return Response('{}', status=202, mimetype='application/json')
     except ExcepcionDominio as e:

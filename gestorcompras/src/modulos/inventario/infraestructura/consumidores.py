@@ -9,7 +9,7 @@ from src.modulos.inventario.infraestructura.schema.v1.eventos import EventoInven
 from src.modulos.inventario.infraestructura.schema.v1.comandos import ComandoValidarInventario
 from src.seedwork.infraestructura import utils
 
-def suscribirse_a_eventos():
+def suscribirse_a_eventos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://0.0.0.0:6650')

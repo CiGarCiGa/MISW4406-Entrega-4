@@ -14,13 +14,11 @@ def comenzar_consumidor(app):
     de procesos y threads como Celery.
     """
 
-    #import threading
-    from src.modulos.inventario.infraestructura.consumidores import suscribirse_a_eventos
-
+    import threading
+    import src.modulos.inventario.infraestructura.consumidores as cliente
     # Suscripción a eventos
-    #threading.Thread(target=cliente.suscribirse_a_eventos).start()
+    threading.Thread(target=cliente.suscribirse_a_eventos, args=[app]).start()
 
-    suscribirse_a_eventos()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -36,8 +34,7 @@ def create_app(configuracion={}):
     # Registro de Blueprints
     app.register_blueprint(inventario.bp)
 
-    from src.modulos.inventario.infraestructura.consumidores import suscribirse_a_eventos
-    suscribirse_a_eventos()
+    comenzar_consumidor(app)
 
     @app.route("/health")
     def health():
