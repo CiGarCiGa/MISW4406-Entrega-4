@@ -6,6 +6,9 @@ from datetime import datetime
 class EventoCompra(EventoDominio):
     ...
 
+class EventoReserva(EventoDominio):
+    ...
+
 @dataclass
 class CompraCreada(EventoCompra):
     id_reserva: uuid.UUID = None
@@ -30,7 +33,12 @@ class CompraPagada(EventoCompra):
     fecha_actualizacion: datetime = None
 
 @dataclass
-class ReservarProducto(EventoCompra):
-    id_producto: uuid.UUID = None
-    id_compra : uuid.UUID = None
+class Producto(EventoCompra):
     cantidad: int = 0
+    id_producto: uuid.UUID = None
+
+@dataclass
+class ReservarProducto(EventoReserva):
+    productos : list[Producto] = None
+    id_compra : uuid.UUID = None
+

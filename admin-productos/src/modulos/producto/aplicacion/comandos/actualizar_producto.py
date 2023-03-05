@@ -4,9 +4,13 @@ from src.seedwork.aplicacion.comandos import ejecutar_commando as comando
 from src.config.db import db
 
 @dataclass
-class ReservarProducto(Comando):
+class Producto:
     id_producto: str
     cantidad: int
+
+@dataclass
+class ReservarProducto(Comando):
+    productos: list[Producto]
     id_compra: str
 
 

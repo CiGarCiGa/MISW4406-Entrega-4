@@ -6,10 +6,8 @@ from src.modulos.gestorCompra.infraestructura.despachadores import Despachador
 
 @dataclass
 class ReservarProducto(Comando):
-    id_producto: str
-    cantidad: int
     id_compra: str
-
+    productos_cantidades: str
 
 class ReservarProductoHandler():
     def handle(self, comando: ReservarProducto):
