@@ -35,12 +35,13 @@ def suscribirse_a_comandos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-producto', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aero-sub-comandos', schema=AvroSchema(ComandoCrearProducto))
+        consumidor = cliente.subscribe('comandos-producto', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aero-sub-comandos', schema=AvroSchema(ComandoReservarProducto))
 
         while True:
             mensaje = consumidor.receive()
             print(f'Comando recibido: {mensaje}')
             logging.error(f'Comando recibido: {mensaje.value()}')
+            logging.error(f'Comando recibido: {mensaje.value().data}')
 
             consumidor.acknowledge(mensaje)
 
@@ -50,3 +51,28 @@ def suscribirse_a_comandos(app=None):
         traceback.print_exc()
         if cliente:
             cliente.close()
+
+import uuid
+import time
+import os
+
+def time_millis():
+    return int(time.time() * 1000)
+
+class EventoIntegracion(Record):
+    id = String(default=str(uuid.uuid4()))
+    time = Long()
+    ingestion = Long(default=time_millis())
+    specversion = String()
+    type = String()
+    datacontenttype = String()
+    service_name = String()
+
+class ComandoReservarProductoPayload(Record):
+    id_producto = String()
+    cantidad = Integer()
+    id_compra= String()
+
+class ComandoReservarProducto(EventoIntegracion):
+    data = ComandoReservarProductoPayload()
+
