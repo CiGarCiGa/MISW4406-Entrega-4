@@ -2,7 +2,7 @@ FROM python:3.10
 
 EXPOSE 5001/tcp
 
-COPY gesto-compra/requirements.txt ./
+COPY gestor-compra/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
