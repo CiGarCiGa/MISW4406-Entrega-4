@@ -185,3 +185,22 @@ services:
       - pulsar
     ports:
       - "5001:5001"
+
+  # Servicio Consolidador
+  consolidador:
+    container_name: consolidador
+    hostname: consolidador
+    build:
+      context: ./
+      dockerfile: consolidador/Dockerfile
+    profiles: ["alpes", "consolidador"]
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+    networks:
+      - pulsar
+    ports:
+      - "5004:5004"
