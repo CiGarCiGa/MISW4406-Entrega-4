@@ -8,6 +8,8 @@ import datetime
 
 from src.modulos.producto.infraestructura.schema.v1.eventos import EventoProductoCreado
 from src.modulos.producto.infraestructura.schema.v1.comandos import ComandoCrearProducto
+from src.modulos.producto.aplicacion.comandos.reservar_productos import ReservarProducto
+from src.seedwork.aplicacion.comandos import ejecutar_commando
 
 from src.seedwork.infraestructura import utils
 
@@ -35,14 +37,14 @@ def suscribirse_a_comandos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-producto', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aero-sub-comandos', schema=AvroSchema(ComandoReservarProducto))
+        consumidor = cliente.subscribe('comandos-producto', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='aero-sub-comandos-producto', schema=AvroSchema(ComandoReservarProducto))
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Comando recibido: {mensaje}')
-            logging.error(f'Comando recibido: {mensaje.value()}')
-            logging.error(f'Comando recibido: {mensaje.value().data}')
-
+            #TODO: Dependiendo del comnado debeira a ir a una operación especifica. Asumimos que esta cola solo utiliza un comando:
+            data = mensaje.value().data
+            reservar_producto=ReservarProducto(productos_cantidades=data.productos_cantidades, id_compra=data.id_compra )
+            ejecutar_commando(reservar_producto,app=app)
             consumidor.acknowledge(mensaje)
 
         cliente.close()
