@@ -7,4 +7,4 @@ class HandlerInventarioIntegracion(Handler):
     def handle_inventario_validado(evento):
         print('handle inventario validado', flush=True)
         despachador = Despachador()
-        despachador.publicar_evento(evento, 'eventos-inventario')
+        despachador.publicar_comando(evento, 'comandos-inventario')
