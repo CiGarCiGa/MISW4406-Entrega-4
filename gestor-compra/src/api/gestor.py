@@ -32,7 +32,14 @@ bp = api.crear_blueprint('inventario', '/inventario')
 @bp.route('/validar-inventario', methods=('POST',))
 def validar_inventario():
     try:
-        orden_dict = request.json
+        orden_dict = {
+            "productos": [
+                {
+                    "sku": "1",
+                    "cantidad": "2"
+                }
+            ]
+        }
         print('entrando', flush=True)
         map_orden = MapeadorOrdenDTOJson()
         orden_dto = map_orden.externo_a_dto(orden_dict)
