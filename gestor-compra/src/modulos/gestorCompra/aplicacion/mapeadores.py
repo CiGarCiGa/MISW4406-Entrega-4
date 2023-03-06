@@ -7,7 +7,7 @@ from abc import ABC
 
 class MapeadorProductoDTOJson(AppMap):
     def _procesar_reserva(self, reserva: dict) -> ProductoReserva:
-        productos_cantidades_dto='='.join([(w.get('id_producto') + ":" + str(w.get('cantidad', int))) for w in reserva.get('productos', list())])
+        productos_cantidades_dto=','.join([(w.get('id_producto') + ":" + str(w.get('cantidad', int))) for w in reserva.get('productos', list())])
         return ProductoReserva(productos_cantidades=productos_cantidades_dto, id_compra=reserva.get('id_compra'))
 
     def externo_a_dto(self, externo: dict) -> ProductoReserva:

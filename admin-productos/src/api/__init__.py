@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, url_for, redirect, jsonify, session
+from flask import Flask, render_template, request, url_for, redirect, jsonify, session, current_app
 from flask_swagger import swagger
 
 # Identifica el directorio base
@@ -45,6 +45,8 @@ def create_app(configuracion={}):
      # Importa Blueprints
     from . import producto
 
+    app.app_context().push()
+
     with app.app_context():
         db.create_all()
         if not app.config.get('TESTING'):
@@ -64,4 +66,11 @@ def create_app(configuracion={}):
     def health():
         return {"status": "up"}
 
+    app_context = app.app_context()
+    app_context.push()
+
     return app
+
+app = create_app()
+app_context = app.app_context()
+app_context.push()

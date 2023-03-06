@@ -5,11 +5,11 @@ from src.modulos.producto.infraestructura.schema.v1.eventos import EventoProduct
 from src.modulos.producto.infraestructura.schema.v1.comandos import ComandoCrearProducto, ComandoCrearProductoPayload
 from src.seedwork.infraestructura import utils
 
-from src.modulos.producto.infraestructura.mapeadores import MapadeadorEventosProducto
+#from src.modulos.producto.infraestructura.mapeadores import MapadeadorEventosProducto
 
 class Despachador:
     def __init__(self):
-        self.mapper = MapadeadorEventosProducto()
+        self.mapper = None #MapadeadorEventosProducto()
 
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
