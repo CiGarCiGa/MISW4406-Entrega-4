@@ -24,6 +24,7 @@ class ReservarProductoHandler():
                 if producto.cantidad < cantidad :
                     validar_existencias = False
                     break;
+                producto.cantidad = producto.cantidad - cantidad
                 nueva_reserva = ProductoReservado(id=uuid.uuid1() ,id_producto=id_producto,id_compra=comando.id_compra,cantidad=cantidad,fecha_creacion=datetime.datetime.now())
                 db.session.add(nueva_reserva)
             if validar_existencias :
