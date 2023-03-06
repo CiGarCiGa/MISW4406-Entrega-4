@@ -15,7 +15,7 @@ def unix_time_millis(dt):
 class Despachador:
     def _publicar_mensaje(self, mensaje, topico, schema):
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        publicador = cliente.create_producer(topico, schema=AvroSchema(EventoInventarioValidado))
+        publicador = cliente.create_producer(topico, schema=schema)
         publicador.send(mensaje)
         cliente.close()
 
@@ -29,9 +29,8 @@ class Despachador:
 
     def publicar_comando(self, comando, topico):
         payload = ComandoValidarInventarioPayload(
-            sku_producto=str(comando.id_usuario),
-            cantidad_producto=int(comando.cantidad_producto),
-            id_orden=str(comando.id_usuario)
+            productos_orden=str(comando.productos_orden),
+            id_orden=str(comando.id)
         )
         comando_integracion = ComandoValidarInventario(data=payload)
         self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoValidarInventario))

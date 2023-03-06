@@ -25,7 +25,7 @@ class ValidarInventarioHandler():
         print('antes de mapeador orden')
         mapeador = MapeadorOrden()
         orden: Orden = mapeador.dto_a_entidad(orden_dto)
-        orden.validar_inventario(orden)
+        orden.validar_inventario(orden, comando)
 
 
 @comando.register(ValidarInventario)
