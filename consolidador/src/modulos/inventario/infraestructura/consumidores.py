@@ -18,7 +18,7 @@ def suscribirse_a_eventos(app=None):
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Evento recibido: {mensaje.value().data}')
+            print(f'Evento recibido: {mensaje.value().data}',flush=True)
 
             consumidor.acknowledge(mensaje)
 
@@ -37,10 +37,10 @@ def suscribirse_a_comandos(app=None):
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Comando recibido: {mensaje.value().data}')
+            print(f'Comando recibido: {mensaje.value().data}',flush=True)
 
-            consumidor.acknowledge(mensaje)     
-            
+            consumidor.acknowledge(mensaje)
+
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
@@ -55,9 +55,9 @@ def consumidor_inicio_flujo(app=None):
         consumidor = cliente.subscribe('topic-inicio-flujo-consolidador', 'inicio-flujo')
         while True:
             mensaje = consumidor.receive()
-            print(f'Comando recibido, inicia flujo')
+            print(f'Comando recibido, inicia flujo',flush=True)
 
-            consumidor.acknowledge(mensaje)     
+            consumidor.acknowledge(mensaje)
             iniciar_flujo()
 
         cliente.close()
