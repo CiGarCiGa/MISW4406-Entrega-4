@@ -23,6 +23,7 @@ def comenzar_consumidor(app):
     # Suscripción a eventos
     threading.Thread(target=gestor.suscribirse_a_comandos, args=[app]).start()
     threading.Thread(target=gestor_inventario.suscribirse_a_eventos, args=[app]).start()
+    threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
