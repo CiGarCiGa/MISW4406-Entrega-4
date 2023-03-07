@@ -55,9 +55,9 @@ Se implementa el microservicio *Consolidador* que, para efectos de la prueba de 
 Utilizar docker-compose para levantar el sistema de la siguiente manera
 1. Descargar el repositorio
 2. Hacer uso de los comandos docker-compose para levantar pulsar
-> docker-compose --profiles pulsar up
+> docker-compose --profile pulsar up
 3. Hacer uso de los comandos docker-compose para levantar las bases de datos
-> docker-compose --profiles db up
+> docker-compose --profile db up
 4. Hacer uso de los comandos los servicios faltantes
-> docker-compose --profiles consolidador --profiles admin-productos ---profiles gestor-compra up
+> docker-compose --profile consolidador --profile admin-productos ---profile gestor-compra up
 
