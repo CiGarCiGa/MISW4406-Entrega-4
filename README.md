@@ -3,7 +3,7 @@
 ## Propuesta
 Se implementa una prueba de concepto a la siguiente arquitectura de solución inicialmente propuesta
 
-![alt text](https://drive.google.com/file/d/1IuYTXZxecqq-uB-BGOdgL93wJdNwdvC8/view?usp=sharing)
+![Componentes-v2](https://user-images.githubusercontent.com/9620295/223312301-e42da9ac-129e-4d5d-a9ab-749a6eed2911.png)
 
 la cual estará enfocada en los siguientes microservicios:
 * GestorCompra
@@ -12,7 +12,7 @@ la cual estará enfocada en los siguientes microservicios:
 
 Para efectos de la prueba de concepto, se propone la siguiente arquitectura para la experimentación:
 
-![alt text](https://drive.google.com/file/d/132Ypff19a6eE4FL9ZjW0ZNBOAIxEghsK/view?usp=sharing)
+![Componentes-Page-4](https://user-images.githubusercontent.com/9620295/223312278-0ae12cff-1ebc-42ae-8f7b-46d6bdd8264a.png)
 
 De acuerdo al diagrama anterior, se propone validar a través de escenarios de calidad los siguientes flujos:
 * Una vez llega una solicitud de orden de compra al servicio GestorCompra, se debe realizar la validación de los productos de la orden en inventario. Si algun(os) productos no esta(n) en inventario, se debe notificar de vuelta. Así mismo, si todos los productos están en inventario, se debe notificar.
