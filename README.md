@@ -22,23 +22,24 @@ De acuerdo al diagrama anterior, se propone validar a través de escenarios de c
 Se proponen los siguientes escenarios de calidad para validar la prueba de concepto, tomando en cuenta los flujos anteriores:
 
 ### Escalabilidad
-<img width="822" alt="Screen Shot 2023-03-07 at 4 30 20 PM" src="https://user-images.githubusercontent.com/9620295/223557352-ba5b2616-cca5-4256-a932-f6403eb0ebb4.png">
+<img width="950" alt="Screen Shot 2023-03-07 at 4 30 20 PM" src="https://user-images.githubusercontent.com/9620295/223557352-ba5b2616-cca5-4256-a932-f6403eb0ebb4.png">
 
 ### Desempeño
-<img width="939" alt="Screen Shot 2023-03-07 at 4 34 28 PM" src="https://user-images.githubusercontent.com/9620295/223558147-4f819080-8e76-4811-9759-d3af551a61e8.png">
+<img width="950" alt="Screen Shot 2023-03-07 at 4 34 28 PM" src="https://user-images.githubusercontent.com/9620295/223558147-4f819080-8e76-4811-9759-d3af551a61e8.png">
 
 ### Disponibilidad
-<img width="818" alt="Screen Shot 2023-03-07 at 4 22 44 PM" src="https://user-images.githubusercontent.com/9620295/223556099-31db5ab8-e13e-46e4-a4f3-e530634504bf.png">
+<img width="950" alt="Screen Shot 2023-03-07 at 4 22 44 PM" src="https://user-images.githubusercontent.com/9620295/223556099-31db5ab8-e13e-46e4-a4f3-e530634504bf.png">
 
 ## GestorCompra
 Tiene las siguientes responsabilidades:
-* Funciona como orquestador y comunicarse con los diferentes servicios para completar la transacción de la compra. En caso de fallo, es necesario realizar la compensanción sobre cada uno de los servicos, publicando el comando de rollback en cada topico.
+* Funciona como orquestador y se comunica con los diferentes servicios para completar la transacción de la compra. En caso de fallo, es necesario realizar la compensanción sobre cada uno de los servicos, publicando el comando de rollback en cada topico.
 * Envia a *Consolidador* los productos de la orden para validar si están en inventario, a través del envío del comando *ValidarInventario*. Luego, recibe la respuesta de la validación consumiendo el evento *InventarioValidado*.
-* Envia a *admin-prodcutos* los productos de la orden que deben reservarse, a través del envío del comando *ReservarProducto*. Luego recibe la respuesta de la reserva consumiendo el evento *ProductosReservados*
-* Envía a *ordenes* la solicitud de creación de una orden. Luego recibe la respuesta de la creación de la orden consumiendo el evento "OrdenCreada".
+* Envia a *admin-prodcutos* los productos de la orden que debe reserva, a través del envío del comando *ReservarProducto*. Luego recibe la respuesta de la reserva consumiendo el evento *ProductosReservados*
+* Envía a *ordenes* la solicitud de creación de una orden. Luego recibe la respuesta de la creación de la orden consumiendo el evento "OrdenCreada". 
+Con estos tres procesos la transación se completa.
 
 ## AdministrarProductos
-Se implementa el microservicio *admin-productos* que para la efectos de la prueba de concepto, manipula la información del stock de inventario. En este caso particular, toma la información de los productos, y los inserta en una tabla "Reserva". Los productos contenido en esta tabla quedaran alli hasta que sean despachados. Adicionalmente se descuenta de la cantidad de productos en el inventario ofrecidos al publico. En caso de fallo de la compra, por alguna razón, es posible revertir la operación liberando los productos y agregando dichos productos nuevamente al inventario (tabla "Producto").
+Se implementa el microservicio *admin-productos* que para la efectos de la prueba de concepto, manipula la información del stock de inventario. En este caso particular, toma la información de los productos, y los inserta en una tabla "Reserva". Los productos contenido en esta tabla quedaran alli hasta que sean despachados. Adicionalmente se descuenta de la cantidad de productos en el inventario ofrecidos al público. En caso de fallo de la compra, por alguna razón, es posible revertir la operación liberando los productos y agregando dichos productos nuevamente al inventario (tabla "Producto").
 
 ## ConsolidadorProductos
 Se implementa el microservicio *Consolidador* que, para efectos de la prueba de concepto, valida si los productos de la orden se encuentran en inventario. Funciona de la siguiente manera:
