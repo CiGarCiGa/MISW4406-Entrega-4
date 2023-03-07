@@ -21,9 +21,14 @@ De acuerdo al diagrama anterior, se propone validar a través de escenarios de c
 ## Escenarios de calidad
 Se proponen los siguientes escenarios de calidad para validar la prueba de concepto, tomando en cuenta los flujos anteriores:
 
-...
-...
-...
+### Escalabilidad
+<img width="822" alt="Screen Shot 2023-03-07 at 4 30 20 PM" src="https://user-images.githubusercontent.com/9620295/223557352-ba5b2616-cca5-4256-a932-f6403eb0ebb4.png">
+
+### Desempeño
+![image](https://user-images.githubusercontent.com/9620295/223557464-c1187fc1-dcbf-45ff-b838-22817a6558b2.png)
+
+### Disponibilidad
+<img width="818" alt="Screen Shot 2023-03-07 at 4 22 44 PM" src="https://user-images.githubusercontent.com/9620295/223556099-31db5ab8-e13e-46e4-a4f3-e530634504bf.png">
 
 ## GestorCompra
 Tiene dos responsabilidades:
