@@ -4,6 +4,9 @@ from dataclasses import dataclass
 from src.seedwork.aplicacion.comandos import ejecutar_commando as comando
 from src.modulos.inventario.dominio.entidades import Orden
 from src.modulos.inventario.aplicacion.mapeadores import MapeadorOrden
+from src.modulos.gestorCompra.infraestructura.dto import Compra
+import uuid
+import datetime
 
 @dataclass
 class ValidarInventario(Comando):
@@ -14,13 +17,21 @@ class ValidarInventario(Comando):
 
 
 class ValidarInventarioHandler():
-    
-    def handle(self, comando: ValidarInventario):
+
+    def handle(self, comando: ValidarInventario, app=None):
         print('Validar inventario handler')
+        id_compra = uuid.uuid1()
+        with app.app_context():
+            from src.config.db import db
+            productos_cantidades=','.join([(w.sku + ":" + str(w.cantidad)) for w in comando.productos_orden[0].productos])
+            compra = Compra(id = id_compra, fecha_creacion = datetime.datetime.now(), fecha_actualizacion=datetime.datetime.now(), productos_cantidades=productos_cantidades)
+            db.session.add(compra)
+            db.session.commit()
+
         orden_dto = OrdenDTO(
                 fecha_actualizacion=comando.fecha_actualizacion
             ,   fecha_creacion=comando.fecha_creacion
-            ,   id=comando.id
+            ,   id=id_compra
             ,   productos=comando.productos_orden)
         print('antes de mapeador orden')
         mapeador = MapeadorOrden()
@@ -29,7 +40,6 @@ class ValidarInventarioHandler():
 
 
 @comando.register(ValidarInventario)
-def ejecutar_comando_validar_inventario(comando: ValidarInventario):
+def ejecutar_comando_validar_inventario(comando: ValidarInventario, app=None):
     handler = ValidarInventarioHandler()
-    handler.handle(comando)
-    
+    handler.handle(comando=comando,app=app)

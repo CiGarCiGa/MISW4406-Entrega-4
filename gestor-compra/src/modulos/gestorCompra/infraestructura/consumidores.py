@@ -10,6 +10,7 @@ from src.modulos.gestorCompra.infraestructura.schema.v1.eventos import EventoPro
 from src.modulos.gestorCompra.infraestructura.schema.v1.comandos import ComandoReservarProducto
 
 from src.seedwork.infraestructura import utils
+from src.modulos.gestorCompra.aplicacion.iniciar_flujo import iniciar_flujo
 
 def suscribirse_a_eventos(app=None):
     cliente = None
@@ -47,6 +48,26 @@ def suscribirse_a_comandos(app=None):
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
+
+##Esto es para probar el flujo de reservar-productos
+def consumidor_inicio_flujo(app=None):
+    cliente = None
+    try:
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        consumidor = cliente.subscribe('topic-inicio-flujo-reservar-productos', 'inicio-flujo')
+        while True:
+            mensaje = consumidor.receive()
+            print(f'Comando recibido, inicia flujo')
+
+            consumidor.acknowledge(mensaje)
+            iniciar_flujo()
+
+        cliente.close()
+    except:
+        logging.error('ERROR: Suscribiendose a iniciar flujo!')
         traceback.print_exc()
         if cliente:
             cliente.close()

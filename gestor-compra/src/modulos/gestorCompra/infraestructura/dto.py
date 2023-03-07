@@ -16,11 +16,12 @@ Base = db.declarative_base()
 class Compra(db.Model):
     __tablename__ = "compra"
     id = db.Column(db.String(40), primary_key=True)
-    id_orden = db.Column(db.String(40), primary_key=False)
-    id_pago = db.Column(db.String(40), primary_key=False)
-    id_reserva_procutos = db.Column(db.String(40), primary_key=False)
-    fecha_creacion = db.Column(db.DateTime, nullable=False)
-    fecha_actualizacion = db.Column(db.DateTime, nullable=False)
+    id_orden = db.Column(db.String(40), primary_key=False, nullable=True)
+    id_pago = db.Column(db.String(40), primary_key=False, nullable=True)
+    id_reserva_productos = db.Column(db.String(40), nullable=True)
+    productos_cantidades=db.Column(db.String(255), nullable=True)
+    fecha_creacion = db.Column(db.DateTime, nullable=True)
+    fecha_actualizacion = db.Column(db.DateTime, nullable=True)
 
 class EventosCompra(db.Model):
     __tablename__ = "eventos_compra"

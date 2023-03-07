@@ -39,8 +39,8 @@ def suscribirse_a_comandos(app=None):
             mensaje = consumidor.receive()
             print(f'Comando recibido: {mensaje.value().data}')
 
-            consumidor.acknowledge(mensaje)     
-            
+            consumidor.acknowledge(mensaje)
+
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')

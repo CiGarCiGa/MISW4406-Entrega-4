@@ -9,6 +9,9 @@ from src.modulos.inventario.infraestructura.schema.v1.eventos import EventoInven
 from src.modulos.inventario.infraestructura.schema.v1.comandos import ComandoValidarInventario
 from src.seedwork.infraestructura import utils
 from src.modulos.inventario.aplicacion.iniciar_flujo import iniciar_flujo
+from src.modulos.gestorCompra.aplicacion.comandos.reservar_producto_concat import ReservarProducto
+from src.seedwork.aplicacion.comandos import ejecutar_commando
+from src.modulos.gestorCompra.infraestructura.dto import Compra
 
 def suscribirse_a_eventos(app=None):
     cliente = None
@@ -18,10 +21,16 @@ def suscribirse_a_eventos(app=None):
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Evento recibido: {mensaje.value().data}')
-
+            data = mensaje.value().data
+            print(f'Evento recibido: {data}', flush=True)
+            """"
+            with app.app_context():
+                from src.config.db import db
+                compra = Compra.query.get(data.id_orden)
+                reservar_producto=ReservarProducto(productos_cantidades=compra.productos_cantidades, id_compra=data.id_compra )
+                ejecutar_commando(comando=reservar_producto,app=app)
+            """
             consumidor.acknowledge(mensaje)
-
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')
@@ -39,8 +48,8 @@ def suscribirse_a_comandos(app=None):
             mensaje = consumidor.receive()
             print(f'Comando recibido: {mensaje.value().data}')
 
-            consumidor.acknowledge(mensaje)     
-            
+            consumidor.acknowledge(mensaje)
+
         cliente.close()
     except:
         logging.error('ERROR: Suscribiendose al tópico de comandos!')
@@ -58,7 +67,7 @@ def consumidor_inicio_flujo(app=None):
             print(f'Comando recibido, inicia flujo')
 
             consumidor.acknowledge(mensaje)     
-            iniciar_flujo()
+            iniciar_flujo(app=app)
 
         cliente.close()
     except:
