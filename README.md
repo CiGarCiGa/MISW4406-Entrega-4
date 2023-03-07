@@ -50,3 +50,14 @@ Se implementa el microservicio *Consolidador* que, para efectos de la prueba de 
 * Se implementan los microservicios utilizando flask/python
 * Se utiliza Avro para la serialización de datos 
 * Para el almacenamiento de datos, se propone una administración de los mismos híbrida, ya que los servicios *AdministrarProductos* y *ConsolidadorProductos* comparten una base de datos, mientras que *Gestorcompra* y *Ordenes* tienen cada uno su respectiva base de datos.
+
+## Instruccion para inicar la aplicación
+Utilizar docker-compose para levantar el sistema de la siguiente manera
+1. Descargar el repositorio
+2. Hacer uso de los comandos docker-compose para levantar pulsar
+> docker-compose --profiles pulsar up
+3. Hacer uso de los comandos docker-compose para levantar las bases de datos
+> docker-compose --profiles db up
+4. Hacer uso de los comandos los servicios faltantes
+> docker-compose --profiles consolidador --profiles admin-productos ---profiles gestor-compra up
+
