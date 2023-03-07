@@ -51,7 +51,7 @@ Se implementa el microservicio *Consolidador* que, para efectos de la prueba de 
 * Se utiliza Avro para la serialización de datos 
 * Para el almacenamiento de datos, se propone una administración de los mismos híbrida, ya que los servicios *AdministrarProductos* y *ConsolidadorProductos* comparten una base de datos, mientras que *Gestorcompra* y *Ordenes* tienen cada uno su respectiva base de datos.
 
-## Instruccion para inicar la aplicación
+## Instruccion para iniciar la aplicación
 Utilizar docker-compose para levantar el sistema de la siguiente manera
 1. Descargar el repositorio
 2. Hacer uso de los comandos docker-compose para levantar pulsar
