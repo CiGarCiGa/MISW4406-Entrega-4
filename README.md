@@ -31,13 +31,14 @@ Se proponen los siguientes escenarios de calidad para validar la prueba de conce
 <img width="818" alt="Screen Shot 2023-03-07 at 4 22 44 PM" src="https://user-images.githubusercontent.com/9620295/223556099-31db5ab8-e13e-46e4-a4f3-e530634504bf.png">
 
 ## GestorCompra
-Tiene dos responsabilidades:
-* Enviar a *Consolidador* los productos de la orden para validar si están en inventario, a través del envío del comando *ValidarInventario*. Luego, recibe la respuesta de la validación consumiendo el evento *InventarioValidado*.
-* ...
-
+Tiene las siguientes responsabilidades:
+* Funciona como orquestador y comunicarse con los diferentes servicios para completar la transacción de la compra. En caso de fallo, es necesario realizar la compensanción sobre cada uno de los servicos, publicando el comando de rollback en cada topico.
+* Envia a *Consolidador* los productos de la orden para validar si están en inventario, a través del envío del comando *ValidarInventario*. Luego, recibe la respuesta de la validación consumiendo el evento *InventarioValidado*.
+* Envia a *admin-prodcutos* los productos de la orden que deben reservarse, a través del envío del comando *ReservarProducto*. Luego recibe la respuesta de la reserva consumiendo el evento *ProductosReservados*
+* Envía a *ordenes* la solicitud de creación de una orden. Luego recibe la respuesta de la creación de la orden consumiendo el evento "OrdenCreada".
 
 ## AdministrarProductos
-...
+Se implementa el microservicio *admin-productos* que para la efectos de la prueba de concepto, manipula la información del stock de inventario. En este caso particular, toma la información de los productos, y los inserta en una tabla "Reserva". Los productos contenido en esta tabla quedaran alli hasta que sean despachados. Adicionalmente se descuenta de la cantidad de productos en el inventario ofrecidos al publico. En caso de fallo de la compra, por alguna razón, es posible revertir la operación liberando los productos y agregando dichos productos nuevamente al inventario (tabla "Producto").
 
 ## ConsolidadorProductos
 Se implementa el microservicio *Consolidador* que, para efectos de la prueba de concepto, valida si los productos de la orden se encuentran en inventario. Funciona de la siguiente manera:
@@ -47,4 +48,4 @@ Se implementa el microservicio *Consolidador* que, para efectos de la prueba de 
 ## Decisiones tomadas
 * Se implementan los microservicios utilizando flask/python
 * Se utiliza Avro para la serialización de datos 
-* Para el almacenamiento de datos, se propone una administración de los mismos híbrida, ya que los servicios *AdministrarProductos* y *ConsolidadorProductos* comparten una base de datos, mientras que *Gestorcompra* y *Ordenes* tienen cada uno su respectiva base de datos
+* Para el almacenamiento de datos, se propone una administración de los mismos híbrida, ya que los servicios *AdministrarProductos* y *ConsolidadorProductos* comparten una base de datos, mientras que *Gestorcompra* y *Ordenes* tienen cada uno su respectiva base de datos.
