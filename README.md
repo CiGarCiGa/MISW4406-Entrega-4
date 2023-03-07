@@ -59,5 +59,5 @@ Utilizar docker-compose para levantar el sistema de la siguiente manera
 3. Hacer uso de los comandos docker-compose para levantar las bases de datos
 > docker-compose --profile db up
 4. Hacer uso de los comandos los servicios faltantes
-> docker-compose --profile consolidador --profile admin-productos ---profile gestor-compra up
+> docker-compose --profile consolidador --profile admin-productos --profile gestor-compra up
 
