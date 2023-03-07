@@ -10,10 +10,10 @@ class MapeadorOrdenDTOJson(AppMap):
         producto_orden_dto: list[ProductoDTO] = list()
         for productos_orden in orden.get('productos', list()):
             producto_dto: ProductoDTO = ProductoDTO(productos_orden.get('sku'), productos_orden.get('cantidad')) 
-            producto_orden_dto.append(producto_dto)  
-                
+            producto_orden_dto.append(producto_dto)
+
         return ProductoOrden(producto_orden_dto)
-    
+
     def externo_a_dto(self, externo: dict) -> OrdenDTO:
         orden_dto = OrdenDTO()
 
