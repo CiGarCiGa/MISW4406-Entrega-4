@@ -63,6 +63,6 @@ Utilizar docker-compose para levantar el sistema de la siguiente manera
 
 ##Distribución de trabajo:
 - Marisela: creacion de consolidador
-- Carlos: creacion de Gestor compra, admin-productos
+- Carlos: creacion de Gestor compra, admin-productos, montar en K8
 - Oscar: genración de SAGA
 - Juan: realizar BBF
