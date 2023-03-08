@@ -151,6 +151,7 @@ services:
     profiles: ["alpes", "admin-productos"]
     depends_on:
       - broker
+      - db-productos
     environment:
       - AEROALPES_ADDRESS=aeroalpes
       - PULSAR_ADDRESS=broker
@@ -173,6 +174,7 @@ services:
     profiles: ["alpes", "gestor-compra"]
     depends_on:
       - broker
+      - db-gestor-compra
     environment:
       - AEROALPES_ADDRESS=aeroalpes
       - PULSAR_ADDRESS=broker
@@ -196,6 +198,7 @@ services:
     profiles: ["alpes", "consolidador"]
     depends_on:
       - broker
+      - db-productos
     environment:
       - AEROALPES_ADDRESS=aeroalpes
       - PULSAR_ADDRESS=broker
