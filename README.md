@@ -61,3 +61,8 @@ Utilizar docker-compose para levantar el sistema de la siguiente manera
 4. Hacer uso de los comandos los servicios faltantes
 > docker-compose --profile consolidador --profile admin-productos --profile gestor-compra up
 
+##Distribución de trabajo:
+- Marisela: creacion de consolidador
+- Carlos: creacion de Gestor compra, admin-productos
+- Oscar: genración de SAGA
+- Juan: realizar BBF
