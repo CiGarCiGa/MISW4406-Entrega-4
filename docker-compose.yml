@@ -146,8 +146,8 @@ services:
     container_name: admin-productos
     hostname: admin-productos
     build:
-      context: ./
-      dockerfile: admin-productos/Dockerfile
+      context: ./admin-productos/
+      dockerfile: Dockerfile
     profiles: ["alpes", "admin-productos"]
     depends_on:
       - broker
@@ -169,8 +169,8 @@ services:
     container_name: gestor-compra
     hostname: gestor-compra
     build:
-      context: ./
-      dockerfile: gestor-compra/Dockerfile
+      context: ./gestor-compra/
+      dockerfile: Dockerfile
     profiles: ["alpes", "gestor-compra"]
     depends_on:
       - broker
@@ -193,8 +193,8 @@ services:
     container_name: consolidador
     hostname: consolidador
     build:
-      context: ./
-      dockerfile: consolidador/Dockerfile
+      context: ./consolidador/
+      dockerfile: Dockerfile
     profiles: ["alpes", "consolidador"]
     depends_on:
       - broker
@@ -207,3 +207,19 @@ services:
       - pulsar
     ports:
       - "5004:5004"
+
+  # Servicio Monitor
+  monitor:
+    container_name: monitor
+    hostname: monitor
+    build:
+      context: ./monitor
+      dockerfile: Dockerfile
+    profiles: ["monitor"]
+    environment:
+      - BROKER_HOST=34.30.24.104
+      - BROKER_PORT=8080
+    networks:
+      - pulsar
+    ports:
+      - "5020:5020"

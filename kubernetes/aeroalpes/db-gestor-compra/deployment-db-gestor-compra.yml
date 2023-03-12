@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-db-gestor-compra
+spec:
+  ports:
+  - port: 3306
+  selector:
+    app:  db-gestor-compra
+  clusterIP: None
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-gestor-compra
+spec:
+  selector:
+    matchLabels:
+      app: db-gestor-compra
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: db-gestor-compra
+    spec:
+      containers:
+      - image: mysql:8
+        name:  db-gestor-compra
+        env:
+        - name: MYSQL_DATABASE
+          value: gestor-compra
+        - name: MYSQL_ROOT_PASSWORD
+          value: adminadmin
+        ports:
+        - containerPort: 3306
+          name:  db-g-compra
+        volumeMounts:
+        - name: mysql-db-gestor-compra-persistent-storage
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql-db-gestor-compra-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-db-gestor-compra-pv-claim
