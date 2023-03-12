@@ -1,0 +1,10 @@
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: admin-productos-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 5000
+    type: HTTP
+    requestPath: /health

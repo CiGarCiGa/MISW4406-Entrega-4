@@ -1,0 +1,33 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitor
+  labels:
+    app: monitor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitor
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: monitor
+    spec:
+      containers:
+        - name: monitor
+          image: us-central1-docker.pkg.dev/miso-arq-no-monoliticas/miso-repo/monitor:1.0
+          ports:
+            - containerPort: 5020
+          env:
+            - name: BROKER_HOST
+              value:  "pulsar-release-proxy.pulsar.svc.cluster.local"
+            - name: BROKER_PORT
+              value:  "8080"
+          imagePullPolicy: Always

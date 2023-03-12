@@ -1,0 +1,41 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-productos
+  labels:
+    app: admin-productos
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: admin-productos
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: admin-productos
+    spec:
+      containers:
+        - name: admin-productos
+          image: us-central1-docker.pkg.dev/miso-arq-no-monoliticas/miso-repo/admin-productos:1.0
+          ports:
+            - containerPort: 5000
+          env:
+            - name: AEROALPES_ADDRESS
+              value:  "aeroalpes"
+            - name: PULSAR_ADDRESS
+              value:  "pulsar-release-proxy.pulsar.svc.cluster.local"
+            - name: BROKER_HOST
+              value:  "pulsar-release-proxy.pulsar.svc.cluster.local"
+            - name: DB_USERNAME
+              value:  root
+            - name: DB_PASSWORD
+              value:  adminadmin
+            - name: DB_HOSTNAME
+              value:  service-db-productos
+          imagePullPolicy: Always
