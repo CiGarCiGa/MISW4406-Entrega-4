@@ -3,6 +3,7 @@ import os
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
 
+
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -22,16 +23,19 @@ def comenzar_consumidor(app):
     import threading
     import src.modulos.gestorCompra.infraestructura.consumidores as gestor
     import src.modulos.inventario.infraestructura.consumidores as gestor_inventario
+    import src.modulos.sagas.infraestructura.consumidores as saga
 
     # Suscripción a eventos
     threading.Thread(target=gestor.suscribirse_a_comandos, args=[app]).start()
     threading.Thread(target=gestor.suscribirse_a_eventos, args=[app]).start()
-    threading.Thread(target=gestor.consumidor_inicio_flujo, args=[app]).start()
+    #threading.Thread(target=gestor.consumidor_inicio_flujo, args=[app]).start()
 
     threading.Thread(target=gestor_inventario.suscribirse_a_eventos, args=[app]).start()
-    threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
+    #threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
 
-    # TODO maybe we should create handlers for saga as well
+    threading.Thread(target=saga.suscribirse_a_comandos, args=[app]).start()
+    threading.Thread(target=saga.suscribirse_a_eventos, args=[app]).start()
+    threading.Thread(target=saga.consumidor_inicio_flujo, args=[app]).start()
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
