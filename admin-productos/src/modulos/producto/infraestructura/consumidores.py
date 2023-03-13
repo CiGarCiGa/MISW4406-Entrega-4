@@ -44,8 +44,13 @@ def suscribirse_a_comandos(app=None):
             #TODO: Dependiendo del comnado debeira a ir a una operación especifica. Asumimos que esta cola solo utiliza un comando:
             data = mensaje.value().data
             reservar_producto=ReservarProducto(productos_cantidades=data.productos_cantidades, id_compra=data.id_compra )
-            ejecutar_commando(reservar_producto,app=app)
-            consumidor.acknowledge(mensaje)
+            try:
+                ejecutar_commando(reservar_producto,app=app)
+                consumidor.acknowledge(mensaje)
+            except:
+                logging.error('ERROR: Erro al ejecutar el comando!')
+                traceback.print_exc()
+                consumidor.negative_acknowledge(mensaje)
 
         cliente.close()
     except:

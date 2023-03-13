@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: consolidador
-          image: us-central1-docker.pkg.dev/miso-arq-no-monoliticas/miso-repo/consolidador:1.0
+          image: us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/consolidador:1.0
           ports:
             - containerPort: 5004
           env:

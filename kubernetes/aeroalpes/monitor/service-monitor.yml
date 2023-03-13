@@ -2,6 +2,8 @@ kind: Service
 apiVersion: v1
 metadata:
   name: service-monitor
+  labels:
+    app: service-monitor
 spec:
   type: NodePort
   selector:
@@ -10,4 +12,4 @@ spec:
     - name: monitor-port
       protocol: TCP
       port: 80
-      targetPort: 5000
+      targetPort: 5020
