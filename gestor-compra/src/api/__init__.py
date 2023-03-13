@@ -6,6 +6,9 @@ from flask_swagger import swagger
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+def registrar_handlers():
+    import src.modulos.sagas.aplicacion
+
 def importar_modelos_alchemy():
     import src.modulos.gestorCompra.infraestructura.dto
 
@@ -28,6 +31,8 @@ def comenzar_consumidor(app):
     threading.Thread(target=gestor_inventario.suscribirse_a_eventos, args=[app]).start()
     threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
 
+    # TODO maybe we should create handlers for saga as well
+
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
@@ -47,6 +52,7 @@ def create_app(configuracion={}):
     from src.config.db import db
 
     importar_modelos_alchemy()
+    registrar_handlers()
 
      # Importa Blueprints
     from . import gestor
@@ -55,6 +61,9 @@ def create_app(configuracion={}):
         db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor(app)
+
+        from src.modulos.sagas.aplicacion.coordinadores.saga_compras import CoordinadorCompras
+        CoordinadorCompras()
 
     # Registro de Blueprints
     app.register_blueprint(gestor.bp)

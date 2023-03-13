@@ -2,10 +2,10 @@ from seedwork.aplicacion.sagas import CoordinadorOrquestacion, Transaccion, Inic
 from seedwork.aplicacion.comandos import Comando
 from seedwork.dominio.eventos import EventoDominio
 
+from src.modulos.gestorCompra.dominio.eventos import CompraCreada, CompraCancelada, CompraAprobada, CompraPagada
 
 
-
-class CoordinadorReservas(CoordinadorOrquestacion):
+class CoordinadorCompras(CoordinadorOrquestacion):
 
     def inicializar_pasos(self):
         self.pasos = [
