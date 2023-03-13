@@ -1,6 +1,0 @@
-
-class PagarReserva():
-    ...
-
-class RevertirPago():
-    ...
