@@ -4,6 +4,8 @@ from src.seedwork.aplicacion.comandos import ejecutar_commando as comando
 from src.modulos.producto.infraestructura.dto import Producto, ProductoReservado
 import uuid
 import datetime
+import time
+import src.seedwork.infraestructura.utils as utils
 
 @dataclass
 class ReservarProducto(Comando):
@@ -13,6 +15,7 @@ class ReservarProducto(Comando):
 
 class ReservarProductoHandler():
     def handle(self, comando: ReservarProducto, app=None):
+        time.sleep(int(utils.get_delay()))
         with app.app_context():
             from src.config.db import db
             # Creando registro en base de datos para la reserva

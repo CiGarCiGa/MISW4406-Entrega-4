@@ -16,3 +16,6 @@ def millis_a_datetime(millis):
 def broker_host():
     return os.getenv('BROKER_HOST', default="localhost")
 
+def get_delay():
+    return os.getenv('DELAY', default="0")
+
