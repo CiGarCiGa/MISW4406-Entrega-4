@@ -1,16 +1,16 @@
-from aeroalpes.seedwork.aplicacion.sagas import CoordinadorOrquestacion, Transaccion, Inicio, Fin
-from aeroalpes.seedwork.aplicacion.comandos import Comando
-from aeroalpes.seedwork.dominio.eventos import EventoDominio
+from seedwork.aplicacion.sagas import CoordinadorOrquestacion, Transaccion, Inicio, Fin
+from seedwork.aplicacion.comandos import Comando
+from seedwork.dominio.eventos import EventoDominio
 
-from aeroalpes.modulos.sagas.aplicacion.comandos.cliente import RegistrarUsuario, ValidarUsuario
-from aeroalpes.modulos.sagas.aplicacion.comandos.pagos import PagarReserva, RevertirPago
-from aeroalpes.modulos.sagas.aplicacion.comandos.gds import ConfirmarReserva, RevertirConfirmacion
-from aeroalpes.modulos.vuelos.aplicacion.comandos.crear_reserva import CrearReserva
-from aeroalpes.modulos.vuelos.aplicacion.comandos.aprobar_reserva import AprobarReserva
-from aeroalpes.modulos.vuelos.aplicacion.comandos.cancelar_reserva import CancelarReserva
-from aeroalpes.modulos.vuelos.dominio.eventos.reservas import ReservaCreada, ReservaCancelada, ReservaAprobada, CreacionReservaFallida, AprobacionReservaFallida
-from aeroalpes.modulos.sagas.dominio.eventos.pagos import ReservaPagada, PagoRevertido
-from aeroalpes.modulos.sagas.dominio.eventos.gds import ReservaGDSConfirmada, ConfirmacionGDSRevertida, ConfirmacionFallida
+from modulos.sagas.aplicacion.comandos.cliente import RegistrarUsuario, ValidarUsuario
+from modulos.sagas.aplicacion.comandos.pagos import PagarReserva, RevertirPago
+from modulos.sagas.aplicacion.comandos.gds import ConfirmarReserva, RevertirConfirmacion
+from modulos.vuelos.aplicacion.comandos.crear_reserva import CrearReserva
+from modulos.vuelos.aplicacion.comandos.aprobar_reserva import AprobarReserva
+from modulos.vuelos.aplicacion.comandos.cancelar_reserva import CancelarReserva
+from modulos.vuelos.dominio.eventos.reservas import ReservaCreada, ReservaCancelada, ReservaAprobada, CreacionReservaFallida, AprobacionReservaFallida
+from modulos.sagas.dominio.eventos.pagos import ReservaPagada, PagoRevertido
+from modulos.sagas.dominio.eventos.gds import ReservaGDSConfirmada, ConfirmacionGDSRevertida, ConfirmacionFallida
 
 
 class CoordinadorReservas(CoordinadorOrquestacion):
@@ -27,7 +27,7 @@ class CoordinadorReservas(CoordinadorOrquestacion):
 
     def iniciar(self):
         self.persistir_en_saga_log(self.pasos[0])
-    
+
     def terminar():
         self.persistir_en_saga_log(self.pasos[-1])
 
