@@ -1,0 +1,35 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consolidador
+  labels:
+    app: consolidador
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consolidador
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: consolidador
+    spec:
+      containers:
+        - name: consolidador
+          image: us-central1-docker.pkg.dev/miso-arq-no-monoliticas/miso-repo/consolidador:1.0
+          ports:
+            - containerPort: 5004
+          env:
+            - name: AEROALPES_ADDRESS
+              value:  "aeroalpes"
+            - name: PULSAR_ADDRESS
+              value:  "pulsar-release-proxy.pulsar.svc.cluster.local"
+            - name: BROKER_HOST
+              value:  "pulsar-release-proxy.pulsar.svc.cluster.local"
+          imagePullPolicy: Always

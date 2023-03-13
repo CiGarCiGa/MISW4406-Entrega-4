@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: service-consolidador
+  annotations:
+    cloud.google.com/backend-config: '{"default": "consolidador-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: consolidador
+  ports:
+    - name: consol-port
+      protocol: TCP
+      port: 80
+      targetPort: 5020
