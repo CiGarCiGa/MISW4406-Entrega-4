@@ -19,6 +19,11 @@ def suscribirse_a_comandos(app=None):
         while True:
             mensaje = consumidor.receive()
             print(f'Comando recibido: {mensaje.value().data}')
+            id_compra = "1"
+
+            comando = ComandoCrearOrden(id_compra)
+
+            ejecutar_commando(comando, app=app)
 
             consumidor.acknowledge(mensaje)
 
