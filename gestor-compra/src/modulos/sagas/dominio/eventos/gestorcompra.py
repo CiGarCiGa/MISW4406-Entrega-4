@@ -16,6 +16,7 @@ class CompraCreada(EventoCompra):
     estado: str = None
     fecha_creacion: datetime = None
 
+@dataclass
 class CreacionCompraFallida(EventoCompra):
     ...
 

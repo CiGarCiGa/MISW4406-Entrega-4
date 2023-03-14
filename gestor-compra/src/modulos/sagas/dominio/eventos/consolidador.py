@@ -10,5 +10,6 @@ class EventoValidacionInventario(EventoDominio):
 class InventarioValidado(EventoValidacionInventario):
     ...
 
+@dataclass
 class ValidacionInventarioFallida(EventoValidacionInventario):
     ...

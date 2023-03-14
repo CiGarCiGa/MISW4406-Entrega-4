@@ -4,8 +4,16 @@ from seedwork.dominio.eventos import EventoDominio
 
 from src.modulos.sagas.dominio.eventos.gestorcompra import CompraCreada, CreacionCompraFallida
 from src.modulos.sagas.dominio.eventos.consolidador import InventarioValidado, ValidacionInventarioFallida
+from src.modulos.sagas.dominio.eventos.adminproducto import ProductoReservado, ReservaProductoFallida
+from src.modulos.sagas.dominio.eventos.ordenes import OrdenCreada, CreacionOrdenFallida
 from src.modulos.sagas.aplicacion.comandos.crear_compra import CrearCompra
 from src.modulos.sagas.aplicacion.comandos.cancelar_compra import CancelarCompra
+from src.modulos.sagas.aplicacion.comandos.validar_inventario import ValidarInventario
+from src.modulos.sagas.aplicacion.comandos.cancelar_validacion_inventario import CancelarValidacionInventario
+from src.modulos.sagas.aplicacion.comandos.reservar_producto import ReservarProducto
+from src.modulos.sagas.aplicacion.comandos.cancelar_reserva_producto import CancelarReservaProducto
+from src.modulos.sagas.aplicacion.comandos.crear_orden import CrearOrden
+from src.modulos.sagas.aplicacion.comandos.cancelar_creacion_orden import CancelarCreacionOrden
 
 
 class CoordinadorCompras(CoordinadorOrquestacion):
