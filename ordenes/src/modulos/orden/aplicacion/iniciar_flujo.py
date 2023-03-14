@@ -1,15 +1,9 @@
-from src.modulos.inventario.aplicacion.mapeadores import MapeadorOrdenDTOJson
-from src.modulos.inventario.aplicacion.comandos.validar_inventario import ValidarInventario
+from src.modulos.orden.aplicacion.comandos.crear_orden import CrearOrden
 from src.seedwork.aplicacion.comandos import ejecutar_commando
 
 def iniciar_flujo(app=None):
-    orden_dict = {
-        "id_compra": "1" 
-    }
-    map_orden = MapeadorOrdenDTOJson()
-    orden_dto = map_orden.externo_a_dto(orden_dict)
-    print('despues de externo a dto', flush=True)
+    id_compra = "1"
 
-    comando = ValidarInventario(orden_dto.fecha_creacion, orden_dto.fecha_actualizacion, orden_dto.id, str(orden_dict['productos']))
+    comando = CrearOrden(id_compra)
 
     ejecutar_commando(comando, app=app)
