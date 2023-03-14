@@ -30,6 +30,6 @@ class Mutation:
             data = payload
         )
         despachador = Despachador()
-        info.context["background_tasks"].add_task(despachador.publicar_mensaje, comando, "comando-crear-compra", "public/default/comando-crear-compra")
+        info.context["background_tasks"].add_task(despachador.publicar_mensaje, comando, "comandos-gestor-compra", "public/default/comandos-gestor-compra")
         
         return CompraRespuesta(mensaje="Procesando Mensaje", codigo=203)
