@@ -238,4 +238,4 @@ services:
     networks:
       - pulsar
     ports:
-      - "8003:8003"
+      - "8888:8888"
