@@ -19,6 +19,7 @@ def comenzar_consumidor(app):
     import threading
     import src.modulos.gestorCompra.infraestructura.consumidores as gestor
     import src.modulos.inventario.infraestructura.consumidores as gestor_inventario
+    import src.modulos.orden.infraestructura.consumidores as gestor_orden
 
     # Suscripción a eventos
     threading.Thread(target=gestor.suscribirse_a_comandos, args=[app]).start()
@@ -29,6 +30,9 @@ def comenzar_consumidor(app):
     threading.Thread(target=gestor_inventario.suscribirse_a_eventos, args=[app]).start()
     threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
 
+    threading.Thread(target=gestor_orden.suscribirse_a_eventos, args=[app]).start()
+    threading.Thread(target=gestor_orden.consumidor_inicio_flujo, args=[app]).start()
+
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
     app = Flask(__name__, instance_relative_config=True)
@@ -38,27 +42,27 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    from src.config.db import init_db, database_connection
+    #from src.config.db import init_db, database_connection
 
-    app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
+    #app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    init_db(app)
+    #init_db(app)
 
     from src.config.db import db
 
-    importar_modelos_alchemy()
+    #importar_modelos_alchemy()
 
      # Importa Blueprints
-    from . import gestor
+    #from . import gestor
 
     with app.app_context():
-        db.create_all()
+        #db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor(app)
 
     # Registro de Blueprints
-    app.register_blueprint(gestor.bp)
+    #app.register_blueprint(gestor.bp)
 
     @app.route("/spec")
     def spec():

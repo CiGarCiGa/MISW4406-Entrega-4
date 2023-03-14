@@ -46,7 +46,7 @@ class MapeadorOrden(ABC):
         return Orden.__class__
 
     def dto_a_entidad(self, dto: OrdenDTO) -> Orden:
-        orden = Orden()
+        orden = Orden(dto.productos)
         orden.productos = list()
 
         productos_orden_dto: list[ProductoDTO] = dto.productos

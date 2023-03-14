@@ -10,7 +10,7 @@ class ValidarInventario(Comando):
     fecha_creacion: str
     fecha_actualizacion: str
     id: str
-    productos_orden: list[OrdenDTO]
+    productos_orden: str
 
 
 class ValidarInventarioHandler():
