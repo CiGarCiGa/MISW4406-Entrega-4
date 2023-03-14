@@ -223,3 +223,19 @@ services:
       - pulsar
     ports:
       - "5020:5020"
+
+  # Servicio bff
+  bff:
+    container_name: bff
+    hostname: bff
+    build:
+      context: ./bff_web
+      dockerfile: Dockerfile
+    profiles: ["bff"]
+    environment:
+      - BROKER_HOST=broker
+      - BROKER_PORT=8080
+    networks:
+      - pulsar
+    ports:
+      - "8003:8003"

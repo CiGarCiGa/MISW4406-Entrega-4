@@ -10,11 +10,11 @@ import datetime
 from pydantic import BaseSettings
 from typing import Any
 
-from .consumidores import suscribirse_a_topico
-from .despachadores import Despachador
+from src.consumidores import suscribirse_a_topico
+from src.despachadores import Despachador
 
-from . import utils
-from .api.v1.router import router as v1
+import src.utils
+from src.api.v1.router import router as v1
 
 from sse_starlette.sse import EventSourceResponse
 
