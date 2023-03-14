@@ -45,9 +45,8 @@ class CoordinadorCompras(CoordinadorOrquestacion):
         # Debemos usar los atributos de ReservaCreada para crear el comando PagarReserva
         ...
 
-
-# TODO Agregue un Listener/Handler para que se puedan redireccionar eventos de dominio
 def oir_mensaje(mensaje):
+    # TODO si es X mensaje (evento), envíe el primer comando (CrearCompra) con el payload recibido
     if isinstance(mensaje, EventoDominio):
         coordinador = CoordinadorCompras()
         coordinador.procesar_evento(mensaje)
