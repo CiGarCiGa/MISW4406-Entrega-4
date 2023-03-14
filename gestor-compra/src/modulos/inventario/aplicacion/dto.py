@@ -10,5 +10,6 @@ class ProductoDTO(DTO):
 class OrdenDTO(DTO):
     fecha_creacion: str = field(default_factory=str)
     fecha_actualizacion: str = field(default_factory=str)
+    id_usuario : str = field(default_factory=str)
     id: str = field(default_factory=str)
-    productos: list[ProductoDTO] = field(default_factory=list)
+    productos: str = field(default_factory=str)

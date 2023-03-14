@@ -22,7 +22,7 @@ class Despachador:
     def publicar_evento(self, evento, topico):
         payload = InventarioValidadoPayload(
             id_orden=str(evento.id_orden), 
-            id_cliente=str(evento.id_cliente), 
+            evento=str(evento.evento), 
         )
         evento_integracion = EventoInventarioValidado(data=payload)
         self._publicar_mensaje(evento_integracion, topico, AvroSchema(EventoInventarioValidado))

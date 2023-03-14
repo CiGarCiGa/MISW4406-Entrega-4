@@ -13,7 +13,7 @@ class ValidarInventario(Comando):
     fecha_creacion: str
     fecha_actualizacion: str
     id: str
-    productos_orden: list[OrdenDTO]
+    productos_orden: str
 
 
 class ValidarInventarioHandler():
@@ -23,7 +23,8 @@ class ValidarInventarioHandler():
         id_compra = uuid.uuid1()
         with app.app_context():
             from src.config.db import db
-            productos_cantidades=','.join([(w.sku + ":" + str(w.cantidad)) for w in comando.productos_orden[0].productos])
+            productos_cantidades=comando.productos_orden
+            #productos_cantidades=','.join([(w.sku + ":" + str(w.cantidad)) for w in comando.productos_orden[0].productos])
             compra = Compra(id = id_compra, fecha_creacion = datetime.datetime.now(), fecha_actualizacion=datetime.datetime.now(), productos_cantidades=productos_cantidades)
             db.session.add(compra)
             db.session.commit()

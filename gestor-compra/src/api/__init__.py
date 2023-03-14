@@ -27,6 +27,8 @@ def comenzar_consumidor(app):
     threading.Thread(target=gestor.suscribirse_a_eventos_productos, args=[app]).start()
 
     threading.Thread(target=gestor_inventario.suscribirse_a_eventos, args=[app]).start()
+    threading.Thread(target=gestor_inventario.suscribirse_a_comandos, args=[app]).start()
+
     threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
 
 def create_app(configuracion={}):

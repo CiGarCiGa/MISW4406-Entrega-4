@@ -5,4 +5,4 @@ from src.seedwork.dominio.eventos import (EventoDominio)
 @dataclass
 class InventarioValidado(EventoDominio):
     id_orden: uuid.UUID = None
-    id_cliente: uuid.UUID = None
+    estado: str = ""

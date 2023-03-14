@@ -16,7 +16,7 @@ class Mutation:
         print(f"ID Usuario: {id_usuario}, productos: {productos},domicilio: {domicilio}")
         payload = dict(
             id_usuario = id_usuario,
-            productos = productos,
+            productos_cantidades = productos,
             domicilio = domicilio
         )
         comando = dict(
@@ -30,6 +30,7 @@ class Mutation:
             data = payload
         )
         despachador = Despachador()
+        print('comando',comando,flush=True)
         info.context["background_tasks"].add_task(despachador.publicar_mensaje, comando, "comandos-gestor-compra", "public/default/comandos-gestor-compra")
 
         return CompraRespuesta(mensaje="Procesando Mensaje", codigo=203)
