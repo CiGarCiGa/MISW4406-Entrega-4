@@ -32,6 +32,26 @@ def suscribirse_a_eventos(app=None):
         if cliente:
             cliente.close()
 
+def suscribirse_a_eventos_productos(app=None):
+    cliente = None
+    try:
+        cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
+        consumidor = cliente.subscribe('eventos-productos', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aero-sub-eventos', schema=AvroSchema(EventoProductoReservado))
+
+        while True:
+            mensaje = consumidor.receive()
+            datos = mensaje.value().data
+            print(f'Evento recibido de eventos-productos: {datos}', flush=True)
+
+            consumidor.acknowledge(mensaje)
+
+        cliente.close()
+    except:
+        logging.error('ERROR: Suscribiendose al tópico de eventos!')
+        traceback.print_exc()
+        if cliente:
+            cliente.close()
+
 def suscribirse_a_comandos(app=None):
     cliente = None
     try:

@@ -1,4 +1,4 @@
-import pulsar,_pulsar  
+import pulsar,_pulsar
 from pulsar.schema import *
 import uuid
 import time
@@ -6,13 +6,13 @@ import logging
 import traceback
 import datetime
 
-from src.modulos.producto.infraestructura.schema.v1.eventos import EventoProductoCreado
+#from src.modulos.producto.infraestructura.schema.v1.eventos import EventoProductoCreado
 from src.modulos.producto.infraestructura.schema.v1.comandos import ComandoCrearProducto
 from src.modulos.producto.aplicacion.comandos.reservar_productos import ReservarProducto
 from src.seedwork.aplicacion.comandos import ejecutar_commando
 
 from src.seedwork.infraestructura import utils
-
+"""
 def suscribirse_a_eventos(app=None):
     cliente = None
     try:
@@ -32,7 +32,7 @@ def suscribirse_a_eventos(app=None):
         traceback.print_exc()
         if cliente:
             cliente.close()
-
+"""
 def suscribirse_a_comandos(app=None):
     cliente = None
     try:

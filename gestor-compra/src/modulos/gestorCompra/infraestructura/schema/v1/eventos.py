@@ -4,10 +4,9 @@ from src.seedwork.infraestructura.utils import time_millis
 import uuid
 
 class ProductoReservadoPayload(Record):
-    id_producto = String()
-    descripcion = String()
-    cantidad = Long()
-    fecha_creacion = Long()
+    id_reserva: String()
+    id_compra: String()
+    evento = String()
 
 class EventoProductoReservado(EventoIntegracion):
     # NOTE La librería Record de Pulsar no es capaz de reconocer campos heredados,
