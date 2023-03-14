@@ -2,7 +2,6 @@ import pulsar
 from pulsar.schema import *
 import logging
 
-from src.modulos.gestorCompra.infraestructura.schema.v1.eventos import EventoProductoReservado, ProductoReservadoPayload
 from src.modulos.gestorCompra.infraestructura.schema.v1.comandos import ComandoReservarProducto, ComandoReservarProductoPayload
 from src.seedwork.infraestructura import utils
 
@@ -29,7 +28,6 @@ class Despachador:
         payload = ComandoReservarProductoPayload(
             id_compra=str(comando.id_compra),
             productos_cantidades=str(comando.productos_cantidades)
-            # agregar itinerarios
         )
         comando_integracion = ComandoReservarProducto(data=payload)
         self._publicar_mensaje(comando_integracion, topico, AvroSchema(ComandoReservarProducto))

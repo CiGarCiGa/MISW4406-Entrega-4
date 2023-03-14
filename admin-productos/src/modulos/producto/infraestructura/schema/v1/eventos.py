@@ -5,7 +5,7 @@ import uuid
 
 class ProductosReservadosPayload(Record):
     id_reserva = String()
-    id_compra: String()
+    id_compra = String()
     evento = String()
 
 class EventoProductosReservados(EventoIntegracion):
