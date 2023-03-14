@@ -38,7 +38,7 @@ def consumidor_inicio_flujo(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('topic-inicio-flujo-orden-creada', 'inicio-flujo')
+        consumidor = cliente.subscribe('topic-inicio-flujo-crear-orden', 'inicio-flujo')
         while True:
             mensaje = consumidor.receive()
             print(f'Comando recibido, inicia flujo')
