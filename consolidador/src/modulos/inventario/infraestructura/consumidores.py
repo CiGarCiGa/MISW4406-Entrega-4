@@ -20,6 +20,8 @@ def suscribirse_a_eventos(app=None):
             mensaje = consumidor.receive()
             print(f'Evento recibido: {mensaje.value().data}',flush=True)
 
+            iniciar_flujo()
+
             consumidor.acknowledge(mensaje)
 
         cliente.close()
@@ -38,7 +40,7 @@ def suscribirse_a_comandos(app=None):
         while True:
             mensaje = consumidor.receive()
             print(f'Comando recibido: {mensaje.value().data}',flush=True)
-
+            iniciar_flujo()
             consumidor.acknowledge(mensaje)
 
         cliente.close()
