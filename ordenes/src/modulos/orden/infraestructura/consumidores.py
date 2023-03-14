@@ -14,18 +14,16 @@ def suscribirse_a_comandos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('comandos-ordenes', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='ordenes-sub-comandos', schema=AvroSchema(ComandoCrearOrden))
+        consumidor = cliente.subscribe('comandos-orden', consumer_type=_pulsar.ConsumerType.Shared, subscription_name='ordenes-sub-comandos', schema=AvroSchema(ComandoCrearOrden))
 
         while True:
             mensaje = consumidor.receive()
             print(f'Comando recibido: {mensaje.value().data}')
-            id_compra = "1"
-
-            comando = ComandoCrearOrden(id_compra)
-
-            ejecutar_commando(comando, app=app)
-
-            consumidor.acknowledge(mensaje)
+            #id_compra = "1"
+            mensaje1 = str(mensaje.value().data)
+            split_mensaje = mensaje1.split("'id_compra': '")[-1][0]
+            #print(split_mensaje, flush=True)
+            iniciar_flujo(app=app, id_compra=str(split_mensaje))
 
         cliente.close()
     except:
