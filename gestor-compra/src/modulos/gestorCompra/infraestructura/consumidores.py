@@ -6,7 +6,7 @@ import logging
 import traceback
 import datetime
 
-from src.modulos.gestorCompra.infraestructura.schema.v1.eventos import EventoProductoReservado
+from src.modulos.gestorCompra.infraestructura.schema.v1.eventos import EventoProductosReservados
 from src.modulos.gestorCompra.infraestructura.schema.v1.comandos import ComandoReservarProducto
 
 from src.seedwork.infraestructura import utils
@@ -16,7 +16,7 @@ def suscribirse_a_eventos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-gestor-compra', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aero-sub-eventos', schema=AvroSchema(EventoProductoReservado))
+        consumidor = cliente.subscribe('eventos-gestor-compra', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aero-sub-eventos', schema=AvroSchema(EventoProductosReservados))
 
         while True:
             mensaje = consumidor.receive()
@@ -36,12 +36,15 @@ def suscribirse_a_eventos_productos(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('eventos-productos', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aero-sub-eventos', schema=AvroSchema(EventoProductoReservado))
+        consumidor = cliente.subscribe('eventos-productos', consumer_type=_pulsar.ConsumerType.Shared,subscription_name='aero-sub-eventos', schema=AvroSchema(EventoProductosReservados))
 
         while True:
             mensaje = consumidor.receive()
             datos = mensaje.value().data
             print(f'Evento recibido de eventos-productos: {datos}', flush=True)
+            print(f'evento: {datos.evento}', flush=True)
+            print(f'evento: {datos.id_compra}', flush=True)
+            print(f'evento: {datos.id_reserva}', flush=True)
 
             consumidor.acknowledge(mensaje)
 

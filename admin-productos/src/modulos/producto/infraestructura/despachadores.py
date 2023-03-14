@@ -6,6 +6,7 @@ from src.modulos.producto.infraestructura.schema.v1.comandos import ComandoCrear
 from src.seedwork.infraestructura import utils
 from src.seedwork.infraestructura.utils import unix_time_millis
 #from src.modulos.producto.infraestructura.mapeadores import MapadeadorEventosProducto
+import json
 
 class Despachador:
     def __init__(self):
@@ -18,10 +19,12 @@ class Despachador:
         cliente.close()
 
     def publicar_evento(self, evento, topico):
+        print(str(evento),flush=True)
         payload = ProductosReservadosPayload(
             id_reserva = str(evento.id_reserva),
             id_compra = str(evento.id_compra),
             evento = str(evento.evento)
         )
-        evento=EventoProductosReservados(data=payload)
-        self._publicar_mensaje(evento, topico, AvroSchema(EventoProductosReservados))
+        new_evento=EventoProductosReservados(data=payload)
+        print(str(new_evento),flush=True)
+        self._publicar_mensaje(new_evento, topico, AvroSchema(EventoProductosReservados))
