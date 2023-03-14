@@ -1,7 +1,7 @@
 import pulsar
 from pulsar.schema import *
 
-from . import utils
+import src.utils as utils
 
 class Despachador:
     def __init__(self):

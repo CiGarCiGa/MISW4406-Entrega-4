@@ -2,8 +2,8 @@ import strawberry
 import typing
 
 from strawberry.types import Info
-from bff_web import utils
-from bff_web.despachadores import Despachador
+import src.utils as utils
+from src.despachadores import Despachador
 
 from .esquemas import *
 
@@ -31,5 +31,5 @@ class Mutation:
         )
         despachador = Despachador()
         info.context["background_tasks"].add_task(despachador.publicar_mensaje, comando, "comandos-gestor-compra", "public/default/comandos-gestor-compra")
-        
+
         return CompraRespuesta(mensaje="Procesando Mensaje", codigo=203)
