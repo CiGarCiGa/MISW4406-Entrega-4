@@ -6,4 +6,4 @@ def iniciar_flujo(app=None):
 
     comando = CrearOrden(id_compra)
 
-    ejecutar_commando(comando, app=app)
+    ejecutar_commando(comando)

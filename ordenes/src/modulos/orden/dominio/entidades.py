@@ -9,9 +9,9 @@ from pydispatch import dispatcher
 class Orden(AgregacionRaiz):
     id_compra: uuid.UUID = field(hash=True, default=None)
 
-    def crear_orden(self, orden: Orden, comando):
-        self.id_compra = orden.id_compra
+    def crear_orden(self, id_compra):
+        self.id_compra = id_compra
         generar_id_orden = random.randint(1,50)
         evento=OrdenCreada(id_orden=generar_id_orden, id_compra=self.id_compra)
         self.agregar_evento(evento)
-        dispatcher.send(signal=f'{OrdenCreada.__class__.__name__}Integracion', evento=comando)
+        dispatcher.send(signal=f'{OrdenCreada.__class__.__name__}Integracion', evento=evento)

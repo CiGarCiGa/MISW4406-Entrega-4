@@ -2,6 +2,9 @@ from src.seedwork.aplicacion.comandos import Comando
 from dataclasses import dataclass
 from src.seedwork.aplicacion.comandos import ejecutar_commando as comando
 from src.modulos.orden.dominio.entidades import Orden
+from src.modulos.orden.infraestructura.despachadores import Despachador
+from src.modulos.orden.dominio.eventos import OrdenCreada
+import random
 
 @dataclass
 class CrearOrden(Comando):
@@ -11,8 +14,10 @@ class CrearOrdenHandler():
     
     def handle(self, comando: CrearOrden):
         print('Crear orden handler')
-        orden: Orden(comando.id_compra)
-        orden.crear_orden(orden)
+        generar_id_orden = random.randint(1,50)
+        despachador = Despachador()
+        evento=OrdenCreada(id_orden=generar_id_orden, id_compra=comando.id_compra)
+        despachador.publicar_evento(evento, 'eventos-orden')
 
 @comando.register(CrearOrden)
 def ejecutar_comando_crear_orden(comando: CrearOrden):
