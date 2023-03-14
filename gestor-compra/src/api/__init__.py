@@ -2,10 +2,11 @@ import os
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
-
+import asyncio
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
+tasks = list()
 
 def registrar_handlers():
     import src.modulos.sagas.aplicacion
@@ -14,16 +15,11 @@ def importar_modelos_alchemy():
     import src.modulos.gestorCompra.infraestructura.dto
 
 def comenzar_consumidor(app):
-    """
-    Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
-    threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
-    de procesos y threads como Celery.
-    """
-
     import threading
     import src.modulos.gestorCompra.infraestructura.consumidores as gestor
     import src.modulos.inventario.infraestructura.consumidores as gestor_inventario
     import src.modulos.sagas.infraestructura.consumidores as saga
+    from src.modulos.sagas.infraestructura.schema.v1.eventos import CompraIniciada
 
     # Suscripción a eventos
     threading.Thread(target=gestor.suscribirse_a_comandos, args=[app]).start()
@@ -33,9 +29,16 @@ def comenzar_consumidor(app):
     threading.Thread(target=gestor_inventario.suscribirse_a_eventos, args=[app]).start()
     #threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
 
-    threading.Thread(target=saga.suscribirse_a_comandos, args=[app]).start()
-    threading.Thread(target=saga.suscribirse_a_eventos, args=[app]).start()
-    threading.Thread(target=saga.consumidor_inicio_flujo, args=[app]).start()
+    #threading.Thread(target=saga.suscribirse_a_comandos, args=[app]).start()
+    #threading.Thread(target=saga.suscribirse_a_eventos, args=[app]).start()
+    #threading.Thread(target=saga.consumidor_inicio_flujo, args=[app]).start()
+
+    global tasks
+    task1 = asyncio.ensure_future(saga.suscribirse_a_topico("eventos-bff", "bff-cliente", CompraIniciada))
+    #task2 = asyncio.ensure_future(saga.suscribirse_a_topico("comando-registrar-usuario", "sub-com-registrar-usuario", ComandoRegistrarUsuario))
+    #task3 = asyncio.ensure_future(saga.suscribirse_a_topico("comando-validar-usuario", "sub-com-validar-usuario", ComandoValidarUsuario))
+    #task4 = asyncio.ensure_future(saga.suscribirse_a_topico("comando-desactivar-usuario", "sub-com-desactivar-usuario", ComandoDesactivarUsuario))
+    tasks.append(task1)
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask

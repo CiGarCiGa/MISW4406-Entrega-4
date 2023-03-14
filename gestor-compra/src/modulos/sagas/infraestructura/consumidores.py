@@ -13,7 +13,7 @@ from src.modulos.sagas.infraestructura.schema.v1.comandos import ComandoReservar
 from src.seedwork.infraestructura import utils
 from src.modulos.sagas.aplicacion.iniciar_flujo import iniciar_flujo
 
-async def suscribirse_a_eventos(topico: str, suscripcion: str, schema: Record, tipo_consumidor:_pulsar.ConsumerType=_pulsar.ConsumerType.Shared):
+async def suscribirse_a_topico(topico: str, suscripcion: str, schema: Record, tipo_consumidor:_pulsar.ConsumerType=_pulsar.ConsumerType.Shared):
     try:
         async with aiopulsar.connect(f'pulsar://{utils.broker_host()}:6650') as cliente:
             async with cliente.subscribe(
@@ -23,11 +23,13 @@ async def suscribirse_a_eventos(topico: str, suscripcion: str, schema: Record, t
                 schema=AvroSchema(schema)
             ) as consumidor:
                 while True:
+                    print(topico)
                     mensaje = await consumidor.receive()
                     print(mensaje)
                     datos = mensaje.value()
                     print(f'Evento recibido: {datos}')
                     await consumidor.acknowledge(mensaje)
+                    # TODO pasar mensaje
 
     except:
         logging.error('ERROR: Suscribiendose al tópico de eventos!')

@@ -1,4 +1,4 @@
-import pulsar,_pulsar  
+import pulsar,_pulsar
 from pulsar.schema import *
 import uuid
 import time
