@@ -3,7 +3,9 @@ from seedwork.aplicacion.comandos import Comando
 from seedwork.dominio.eventos import EventoDominio
 
 from src.modulos.sagas.dominio.eventos.gestorcompra import CompraCreada, CreacionCompraFallida
-from src.modulos.sagas.aplicacion.comandos import CrearCompra
+from src.modulos.sagas.dominio.eventos.consolidador import InventarioValidado, ValidacionInventarioFallida
+from src.modulos.sagas.aplicacion.comandos.crear_compra import CrearCompra
+from src.modulos.sagas.aplicacion.comandos.cancelar_compra import CancelarCompra
 
 
 class CoordinadorCompras(CoordinadorOrquestacion):
