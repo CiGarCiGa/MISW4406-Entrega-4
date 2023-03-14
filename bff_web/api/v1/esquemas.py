@@ -9,22 +9,21 @@ from datetime import datetime
 
 AEROALPES_HOST = os.getenv("AEROALPES_ADDRESS", default="localhost")
 FORMATO_FECHA = '%Y-%m-%dT%H:%M:%SZ'
+id_usuario = ''
 
-def obtener_reservas(root) -> typing.List["Reserva"]:
-    reservas_json = requests.get(f'http://{AEROALPES_HOST}:5000/vuelos/reserva').json()
-    reservas = []
+def obtener_compras(root) -> typing.List["Compra"]:
+    compras_json = requests.get(f'http://{AEROALPES_HOST}:5000/usuario/{id_usuario}/compras').json()
+    compras = []
 
-    for reserva in reservas_json:
-        reservas.append(
-            Reserva(
-                fecha_creacion=datetime.strptime(reserva.get('fecha_creacion'), FORMATO_FECHA), 
-                fecha_actualizacion=datetime.strptime(reserva.get('fecha_actualizacion'), FORMATO_FECHA), 
-                id=reserva.get('id'), 
-                id_usuario=reserva.get('id_usuario', '')
+    for compra in compras_json:
+        compras.append(
+            Compra(
+                id_usuario=compra.get('id_usuario'), 
+                estado=compra.get('estado')
             )
         )
 
-    return reservas
+    return compras
 
 @strawberry.type
 class Itinerario:
@@ -32,15 +31,14 @@ class Itinerario:
     ...
 
 @strawberry.type
-class Reserva:
-    id: str
+class Compra:
     id_usuario: str
-    fecha_creacion: datetime
-    fecha_actualizacion: datetime
+    productos: str
+    domicilio: str
     #itinerarios: typing.List[Itinerario]
 
 @strawberry.type
-class ReservaRespuesta:
+class CompraRespuesta:
     mensaje: str
     codigo: int
 

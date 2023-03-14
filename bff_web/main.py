@@ -32,7 +32,7 @@ eventos = list()
 async def app_startup():
     global tasks
     global eventos
-    task1 = asyncio.ensure_future(suscribirse_a_topico("eventos-reserva", "aeroalpes-bff", "public/default/eventos-reserva", eventos=eventos))
+    task1 = asyncio.ensure_future(suscribirse_a_topico("eventos-compra", "aeroalpes-bff", "public/default/eventos-compra", eventos=eventos))
     tasks.append(task1)
 
 @app.on_event("shutdown")
