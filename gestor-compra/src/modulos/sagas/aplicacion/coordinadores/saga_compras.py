@@ -2,7 +2,7 @@ from seedwork.aplicacion.sagas import CoordinadorOrquestacion, Transaccion, Inic
 from seedwork.aplicacion.comandos import Comando
 from seedwork.dominio.eventos import EventoDominio
 
-from src.modulos.gestorCompra.dominio.eventos import CompraCreada, CompraCancelada, CompraAprobada, CompraPagada
+from src.modulos.sagas.dominio.eventos.gestorcompra import CompraCreada, CreacionCompraFallida
 
 
 class CoordinadorCompras(CoordinadorOrquestacion):
@@ -38,7 +38,7 @@ class CoordinadorCompras(CoordinadorOrquestacion):
 # TODO Agregue un Listener/Handler para que se puedan redireccionar eventos de dominio
 def oir_mensaje(mensaje):
     if isinstance(mensaje, EventoDominio):
-        coordinador = CoordinadorReservas()
+        coordinador = CoordinadorCompras()
         coordinador.procesar_evento(mensaje)
     else:
         raise NotImplementedError("El mensaje no es evento de Dominio")

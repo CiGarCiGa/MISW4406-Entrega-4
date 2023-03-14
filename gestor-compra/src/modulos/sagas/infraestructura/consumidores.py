@@ -73,12 +73,12 @@ def suscribirse_a_comandos(app=None):
         if cliente:
             cliente.close()
 
-##Esto es para probar el flujo de reservar-productos
+##Esto es para probar el flujo de realizar-compra
 def consumidor_inicio_flujo(app=None):
     cliente = None
     try:
         cliente = pulsar.Client(f'pulsar://{utils.broker_host()}:6650')
-        consumidor = cliente.subscribe('topic-inicio-flujo-reservar-productos', 'inicio-flujo')
+        consumidor = cliente.subscribe('topic-inicio-flujo-realizar-compra', 'inicio-flujo')
         while True:
             mensaje = consumidor.receive()
             print(f'Comando recibido, inicia flujo')
