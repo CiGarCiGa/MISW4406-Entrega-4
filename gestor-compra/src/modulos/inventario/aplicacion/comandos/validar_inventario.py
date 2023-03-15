@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from src.seedwork.aplicacion.comandos import ejecutar_commando as comando
 from src.modulos.inventario.dominio.entidades import Orden
 from src.modulos.inventario.aplicacion.mapeadores import MapeadorOrden
-#from src.modulos.gestorCompra.infraestructura.dto import Compra
+from src.modulos.gestorCompra.infraestructura.dto import Compra
 import uuid
 import datetime
 from pydispatch import dispatcher

@@ -44,22 +44,22 @@ def create_app(configuracion={}):
     app.config['TESTING'] = configuracion.get('TESTING')
 
      # Inicializa la DB
-    #from src.config.db import init_db, database_connection
+    from src.config.db import init_db, database_connection
 
-    #app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_connection(configuracion, basedir=basedir)
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-    #init_db(app)
+    init_db(app)
 
     from src.config.db import db
 
-    #importar_modelos_alchemy()
+    importar_modelos_alchemy()
 
      # Importa Blueprints
-    #from . import gestor
+    from . import gestor
 
     with app.app_context():
-        #db.create_all()
+        db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor(app)
 
