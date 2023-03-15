@@ -1,0 +1,57 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  annotations:
+    meta.helm.sh/release-name: pulsar-release
+    meta.helm.sh/release-namespace: pulsar
+  generation: 1
+  labels:
+    app: pulsar-release-custom-monitor
+    app.kubernetes.io/instance: pulsar-release
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: kube-prometheus-stack
+    app.kubernetes.io/version: 41.5.1
+    release: pulsar-release
+  managedFields:
+  - apiVersion: monitoring.coreos.com/v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:meta.helm.sh/release-name: {}
+          f:meta.helm.sh/release-namespace: {}
+        f:labels:
+          .: {}
+          f:app: {}
+          f:app.kubernetes.io/instance: {}
+          f:app.kubernetes.io/managed-by: {}
+          f:app.kubernetes.io/part-of: {}
+          f:app.kubernetes.io/version: {}
+          f:chart: {}
+          f:heritage: {}
+          f:release: {}
+      f:spec:
+        .: {}
+        f:endpoints: {}
+        f:jobLabel: {}
+        f:namespaceSelector:
+          .: {}
+          f:matchNames: {}
+        f:selector: {}
+    manager: helm
+    operation: Update
+  name: pulsar-release-custom-monitor
+  namespace: pulsar
+spec:
+  endpoints:
+  - path: /metrics
+    port: monitor-port
+    interval: 10s
+  jobLabel: jobLabel
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      app: service-monitor

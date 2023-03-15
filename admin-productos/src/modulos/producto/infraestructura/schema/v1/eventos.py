@@ -3,13 +3,12 @@ from src.seedwork.infraestructura.schema.v1.eventos import EventoIntegracion
 from src.seedwork.infraestructura.utils import time_millis
 import uuid
 
-class ProductoCreadoPayload(Record):
-    id_producto = String()
-    descripcion = String()
-    cantidad = Long()
-    fecha_creacion = Long()
+class ProductosReservadosPayload(Record):
+    id_reserva = String()
+    id_compra = String()
+    evento = String()
 
-class EventoProductoCreado(EventoIntegracion):
+class EventoProductosReservados(EventoIntegracion):
     # NOTE La librería Record de Pulsar no es capaz de reconocer campos heredados, 
     # por lo que los mensajes al ser codificados pierden sus valores
     # Dupliqué el los cambios que ya se encuentran en la clase Mensaje
@@ -20,7 +19,7 @@ class EventoProductoCreado(EventoIntegracion):
     type = String()
     datacontenttype = String()
     service_name = String()
-    data = ProductoCreadoPayload()
+    data = ProductosReservadosPayload()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

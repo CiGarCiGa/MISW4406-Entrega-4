@@ -28,3 +28,9 @@ class ProductoAprobado(EventoProducto):
 class ProductoPagado(EventoProducto):
     id_reserva: uuid.UUID = None
     fecha_actualizacion: datetime = None
+
+@dataclass
+class ProductosReservados(EventoProducto):
+    id_reserva: str = None
+    id_compra: uuid.UUID = None
+    evento: str = None

@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: admin-productos
-          image: us-central1-docker.pkg.dev/miso-arq-no-monoliticas/miso-repo/admin-productos:1.0
+          image: us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/admin-productos:1.0
           ports:
             - containerPort: 5000
           env:
@@ -38,4 +38,6 @@ spec:
               value:  adminadmin
             - name: DB_HOSTNAME
               value:  service-db-productos
+            - name: DELAY
+              value:  "8"
           imagePullPolicy: Always

@@ -11,7 +11,7 @@ from src.seedwork.infraestructura import utils
 from src.modulos.inventario.aplicacion.iniciar_flujo import iniciar_flujo
 from src.modulos.gestorCompra.aplicacion.comandos.reservar_producto_concat import ReservarProducto
 from src.seedwork.aplicacion.comandos import ejecutar_commando
-from src.modulos.gestorCompra.infraestructura.dto import Compra
+#from src.modulos.gestorCompra.infraestructura.dto import Compra
 
 def suscribirse_a_eventos(app=None):
     cliente = None
@@ -23,6 +23,9 @@ def suscribirse_a_eventos(app=None):
             mensaje = consumidor.receive()
             data = mensaje.value().data
             print(f'Evento recibido: {data}', flush=True)
+
+            comando = ReservarProducto(id_compra=data.id_orden,productos_cantidades="")
+            ejecutar_commando(comando,app=app)
             """"
             with app.app_context():
                 from src.config.db import db

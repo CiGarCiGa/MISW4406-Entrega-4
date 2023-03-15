@@ -2,14 +2,14 @@ import os
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
-import asyncio
+#import asyncio
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 tasks = list()
 
-def registrar_handlers():
-    import src.modulos.sagas.aplicacion
+#def registrar_handlers():
+#    import src.modulos.sagas.aplicacion
 
 def importar_modelos_alchemy():
     import src.modulos.gestorCompra.infraestructura.dto
@@ -18,27 +18,26 @@ def comenzar_consumidor(app):
     import threading
     import src.modulos.gestorCompra.infraestructura.consumidores as gestor
     import src.modulos.inventario.infraestructura.consumidores as gestor_inventario
-    import src.modulos.sagas.infraestructura.consumidores as saga
-    from src.modulos.sagas.infraestructura.schema.v1.eventos import CompraIniciada
+    import src.modulos.orden.infraestructura.consumidores as gestor_orden
+
+    #import src.modulos.sagas.infraestructura.consumidores as saga
+    #from src.modulos.sagas.infraestructura.schema.v1.eventos import CompraIniciada
 
     # Suscripción a eventos
     threading.Thread(target=gestor.suscribirse_a_comandos, args=[app]).start()
     threading.Thread(target=gestor.suscribirse_a_eventos, args=[app]).start()
-    #threading.Thread(target=gestor.consumidor_inicio_flujo, args=[app]).start()
+    threading.Thread(target=gestor.consumidor_inicio_flujo, args=[app]).start()
+    threading.Thread(target=gestor.suscribirse_a_eventos_productos, args=[app]).start()
 
     threading.Thread(target=gestor_inventario.suscribirse_a_eventos, args=[app]).start()
-    #threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
+    threading.Thread(target=gestor_inventario.suscribirse_a_comandos, args=[app]).start()
 
-    #threading.Thread(target=saga.suscribirse_a_comandos, args=[app]).start()
-    #threading.Thread(target=saga.suscribirse_a_eventos, args=[app]).start()
-    #threading.Thread(target=saga.consumidor_inicio_flujo, args=[app]).start()
+    threading.Thread(target=gestor_inventario.consumidor_inicio_flujo, args=[app]).start()
 
-    global tasks
-    task1 = asyncio.ensure_future(saga.suscribirse_a_topico("eventos-bff", "bff-cliente", CompraIniciada))
-    #task2 = asyncio.ensure_future(saga.suscribirse_a_topico("comando-registrar-usuario", "sub-com-registrar-usuario", ComandoRegistrarUsuario))
-    #task3 = asyncio.ensure_future(saga.suscribirse_a_topico("comando-validar-usuario", "sub-com-validar-usuario", ComandoValidarUsuario))
-    #task4 = asyncio.ensure_future(saga.suscribirse_a_topico("comando-desactivar-usuario", "sub-com-desactivar-usuario", ComandoDesactivarUsuario))
-    tasks.append(task1)
+    threading.Thread(target=gestor_orden.suscribirse_a_eventos, args=[app]).start()
+    threading.Thread(target=gestor_orden.consumidor_inicio_flujo, args=[app]).start()
+
+    #asyncio.ensure_future(saga.suscribirse_a_topico("eventos-bff", "bff-cliente", CompraIniciada))
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -59,7 +58,7 @@ def create_app(configuracion={}):
     from src.config.db import db
 
     importar_modelos_alchemy()
-    registrar_handlers()
+    #registrar_handlers()
 
      # Importa Blueprints
     from . import gestor
@@ -69,11 +68,11 @@ def create_app(configuracion={}):
         if not app.config.get('TESTING'):
             comenzar_consumidor(app)
 
-        from src.modulos.sagas.aplicacion.coordinadores.saga_compras import CoordinadorCompras
-        CoordinadorCompras()
+        #from src.modulos.sagas.aplicacion.coordinadores.saga_compras import CoordinadorCompras
+        #CoordinadorCompras()
 
     # Registro de Blueprints
-    app.register_blueprint(gestor.bp)
+    #app.register_blueprint(gestor.bp)
 
     @app.route("/spec")
     def spec():

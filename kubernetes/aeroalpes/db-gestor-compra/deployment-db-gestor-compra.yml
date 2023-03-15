@@ -3,11 +3,14 @@ kind: Service
 metadata:
   name: service-db-gestor-compra
 spec:
-  ports:
-  - port: 3306
   selector:
     app:  db-gestor-compra
-  clusterIP: None
+  type: NodePort
+  ports:
+    - name: db-gest-c-port
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -1,4 +1,4 @@
-import pulsar,_pulsar  
+import pulsar,_pulsar
 from pulsar.schema import *
 import uuid
 import time
@@ -6,13 +6,13 @@ import logging
 import traceback
 import datetime
 
-from src.modulos.producto.infraestructura.schema.v1.eventos import EventoProductoCreado
+#from src.modulos.producto.infraestructura.schema.v1.eventos import EventoProductoCreado
 from src.modulos.producto.infraestructura.schema.v1.comandos import ComandoCrearProducto
 from src.modulos.producto.aplicacion.comandos.reservar_productos import ReservarProducto
 from src.seedwork.aplicacion.comandos import ejecutar_commando
 
 from src.seedwork.infraestructura import utils
-
+"""
 def suscribirse_a_eventos(app=None):
     cliente = None
     try:
@@ -32,7 +32,7 @@ def suscribirse_a_eventos(app=None):
         traceback.print_exc()
         if cliente:
             cliente.close()
-
+"""
 def suscribirse_a_comandos(app=None):
     cliente = None
     try:
@@ -44,8 +44,13 @@ def suscribirse_a_comandos(app=None):
             #TODO: Dependiendo del comnado debeira a ir a una operación especifica. Asumimos que esta cola solo utiliza un comando:
             data = mensaje.value().data
             reservar_producto=ReservarProducto(productos_cantidades=data.productos_cantidades, id_compra=data.id_compra )
-            ejecutar_commando(reservar_producto,app=app)
-            consumidor.acknowledge(mensaje)
+            try:
+                ejecutar_commando(reservar_producto,app=app)
+                consumidor.acknowledge(mensaje)
+            except:
+                logging.error('ERROR: Erro al ejecutar el comando!')
+                traceback.print_exc()
+                consumidor.negative_acknowledge(mensaje)
 
         cliente.close()
     except:

@@ -15,6 +15,7 @@ def iniciar_flujo(app=None):
     map_orden = MapeadorOrdenDTOJson()
     orden_dto = map_orden.externo_a_dto(orden_dict)
     print('despues de externo a dto', flush=True)
-    comando = ValidarInventario(orden_dto.fecha_creacion, orden_dto.fecha_actualizacion, orden_dto.id, orden_dto.productos)
+
+    comando = ValidarInventario(orden_dto.fecha_creacion, orden_dto.fecha_actualizacion, orden_dto.id, str(orden_dict['productos']))
 
     ejecutar_commando(comando, app=app)
