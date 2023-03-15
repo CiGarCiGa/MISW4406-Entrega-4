@@ -5,10 +5,12 @@ import time
 import logging
 import traceback
 
+
 from src.modulos.orden.infraestructura.schema.v1.comandos import ComandoCrearOrden
 from src.seedwork.infraestructura import utils
 from src.modulos.orden.aplicacion.iniciar_flujo import iniciar_flujo
 from src.seedwork.aplicacion.comandos import ejecutar_commando
+from src.modulos.orden.aplicacion.comandos.crear_orden import CrearOrden
 
 def suscribirse_a_comandos(app=None):
     cliente = None
@@ -18,12 +20,15 @@ def suscribirse_a_comandos(app=None):
 
         while True:
             mensaje = consumidor.receive()
-            print(f'Comando recibido: {mensaje.value().data}')
+            data=mensaje.value().data
+            print(f'Comando recibido: {data}',flush=True)
+            crearOrden=CrearOrden(id_compra=data.id_compra)
+            ejecutar_commando(crearOrden)
             #id_compra = "1"
-            mensaje1 = str(mensaje.value().data)
-            split_mensaje = mensaje1.split("'id_compra': '")[-1][0]
+            #mensaje1 = str(mensaje.value().data)
+            #split_mensaje = mensaje1.split("'id_compra': '")[-1][0]
             #print(split_mensaje, flush=True)
-            iniciar_flujo(app=app, id_compra=str(split_mensaje))
+            #iniciar_flujo(app=app, id_compra=str(split_mensaje))
 
         cliente.close()
     except:

@@ -11,8 +11,8 @@ class CrearOrden(Comando):
 class CrearOrdenHandler():
     
     def handle(self, comando: CrearOrden):
-        print('Crear orden handler')
-        generar_id_orden = random.randint(1,50)
+        print('Crear orden handler',flush=True)
+        #generar_id_orden = random.randint(1,50)
         despachador = Despachador()
         despachador.publicar_comando(comando, 'comandos-orden')
 

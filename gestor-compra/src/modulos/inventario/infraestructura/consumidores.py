@@ -23,6 +23,9 @@ def suscribirse_a_eventos(app=None):
             mensaje = consumidor.receive()
             data = mensaje.value().data
             print(f'Evento recibido: {data}', flush=True)
+
+            comando = ReservarProducto(id_compra=data.id_orden,productos_cantidades="")
+            ejecutar_commando(comando,app=app)
             """"
             with app.app_context():
                 from src.config.db import db

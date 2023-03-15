@@ -11,6 +11,8 @@ class Orden(AgregacionRaiz):
     productos: str = field(default_factory=str)
 
     def validar_inventario(self, orden: Orden, comando):
+        print('orden: ',str(orden),flush=True)
+        print('comando: ',str(comando),flush=True)
         self.id = orden.id
         self.productos = orden.productos
         print('antes de agregar evento inventario validado', flush=True)
