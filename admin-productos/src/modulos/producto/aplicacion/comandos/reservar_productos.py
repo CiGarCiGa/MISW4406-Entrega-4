@@ -6,7 +6,7 @@ import uuid
 import datetime
 import time
 import src.seedwork.infraestructura.utils as utils
-from src.modulos.producto.dominio.eventos import ProductosReservados, ProductosNoReservados
+from src.modulos.producto.dominio.eventos import ProductosReservados
 from src.modulos.producto.infraestructura.despachadores import Despachador
 @dataclass
 class ReservarProducto(Comando):
@@ -36,13 +36,13 @@ class ReservarProductoHandler():
                 db.session.add(nueva_reserva)
             if validar_existencias :
                 db.session.commit()
-                evento = ProductosReservados(id_reserva=id_reservas,id_compra=comando.id_compra)
+                evento = ProductosReservados(id_reserva=id_reservas,id_compra=comando.id_compra, evento= 'ProductosReservados')
                 despachador = Despachador()
                 despachador.publicar_evento(evento=evento, topico='eventos-productos')
                 print('Evento "ProductoReservado" enviado para id_compra :'+ comando.id_compra, flush=True)
             else:
                 db.session.rollback()
-                evento = ProductosNoReservados(id_reserva=id_reservas,id_compra=comando.id_compra)
+                evento = ProductosReservados(id_reserva=id_reservas,id_compra=comando.id_compra, evento= 'ProductosNoReservados')
                 despachador = Despachador()
                 despachador.publicar_evento(evento=evento, topico='eventos-productos')
                 print('Evento "ProductosNoReservados" enviado para id_compra :'+ comando.id_compra, flush=True)

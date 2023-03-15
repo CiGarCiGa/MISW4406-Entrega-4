@@ -26,11 +26,6 @@ def obtener_compras(root) -> typing.List["Compra"]:
     return compras
 
 @strawberry.type
-class Itinerario:
-    # TODO Completar objeto strawberry para incluir los itinerarios
-    ...
-
-@strawberry.type
 class Compra:
     id_usuario: str
     productos: str

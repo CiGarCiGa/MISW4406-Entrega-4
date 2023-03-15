@@ -7,11 +7,11 @@ from pydispatch import dispatcher
 
 @dataclass
 class Orden(AgregacionRaiz):
-    id_cliente: uuid.UUID = field(hash=True, default=None)
-    productos: ov.ProductoOrden = field(default_factory=ov.ProductoOrden)
+    id: uuid.UUID = field(hash=True, default=None)
+    productos: str = field(default_factory=str)
 
     def validar_inventario(self, orden: Orden, comando):
-        self.id_cliente = orden.id_cliente
+        self.id = orden.id
         self.productos = orden.productos
         print('antes de agregar evento inventario validado', flush=True)
         dispatcher.send(signal=f'{comando.__class__.__name__}Integracion', evento=comando)

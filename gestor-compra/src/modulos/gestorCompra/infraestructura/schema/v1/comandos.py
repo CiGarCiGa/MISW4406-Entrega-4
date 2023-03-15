@@ -11,3 +11,14 @@ class ComandoReservarProducto(ComandoIntegracion):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class ComandoCrearCompraPayload(ComandoIntegracion):
+    productos_cantidades = String()
+    id_usuario= String()
+    domicilio= String()
+
+class ComandoCrearCompra(ComandoIntegracion):
+    data = ComandoCrearCompraPayload()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

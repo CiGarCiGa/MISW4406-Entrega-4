@@ -9,7 +9,9 @@ from src.modulos.inventario.infraestructura.schema.v1.eventos import EventoInven
 from src.modulos.inventario.infraestructura.schema.v1.comandos import ComandoValidarInventario
 from src.seedwork.infraestructura import utils
 from src.modulos.inventario.aplicacion.iniciar_flujo import iniciar_flujo
-
+from src.modulos.inventario.aplicacion.comandos.validar_inventario import ValidarInventario
+from src.seedwork.aplicacion.comandos import ejecutar_commando
+"""
 def suscribirse_a_eventos(app=None):
     cliente = None
     try:
@@ -30,7 +32,7 @@ def suscribirse_a_eventos(app=None):
         traceback.print_exc()
         if cliente:
             cliente.close()
-
+"""
 def suscribirse_a_comandos(app=None):
     cliente = None
     try:
@@ -39,8 +41,10 @@ def suscribirse_a_comandos(app=None):
 
         while True:
             mensaje = consumidor.receive()
+            data = mensaje.value().data
             print(f'Comando recibido: {mensaje.value().data}',flush=True)
-            iniciar_flujo()
+            validar_inventario=ValidarInventario(id=data.id_orden, productos_orden=data.productos_orden,fecha_creacion="", fecha_actualizacion="")
+            ejecutar_commando(validar_inventario, app=app)
             consumidor.acknowledge(mensaje)
 
         cliente.close()
