@@ -1,0 +1,12 @@
+{
+    "python.analysis.extraPaths": [
+        "./gestorcompras",
+        "./gestorcompras",
+        "./gestorcompras",
+        "./gestorcompras",
+        "./gestorcompras",
+        "./gestorcompras",
+        "./gestorcompras",
+        "./gestor-compra"
+    ]
+}

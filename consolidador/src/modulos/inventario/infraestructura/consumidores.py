@@ -22,6 +22,8 @@ def suscribirse_a_eventos(app=None):
             mensaje = consumidor.receive()
             print(f'Evento recibido: {mensaje.value().data}',flush=True)
 
+            iniciar_flujo()
+
             consumidor.acknowledge(mensaje)
 
         cliente.close()
