@@ -50,6 +50,7 @@ Se implementa el microservicio *Consolidador* que, para efectos de la prueba de 
 * Se implementan los microservicios utilizando flask/python
 * Se utiliza Avro para la serialización de datos 
 * Para el almacenamiento de datos, se propone una administración de los mismos híbrida, ya que los servicios *AdministrarProductos* y *ConsolidadorProductos* comparten una base de datos, mientras que *Gestorcompra* y *Ordenes* tienen cada uno su respectiva base de datos.
+* Para el BFF, se utilizó Grapghql.
 
 ## Instruccion para iniciar la aplicación
 Utilizar docker-compose para levantar el sistema de la siguiente manera
@@ -60,9 +61,11 @@ Utilizar docker-compose para levantar el sistema de la siguiente manera
 > docker-compose --profile db up
 4. Hacer uso de los comandos los servicios faltantes
 > docker-compose --profile consolidador --profile admin-productos --profile gestor-compra up
+5. Hacer uso de los comandos docker-compose para levantar BFF
+> docker-compose --profile bff up
 
 ##Distribución de trabajo:
 - Marisela: creacion de consolidador
 - Carlos: creacion de Gestor compra, admin-productos, montar en K8
-- Oscar: genración de SAGA
+- Oscar: Generación de SAGA
 - Juan: realizar BBF
