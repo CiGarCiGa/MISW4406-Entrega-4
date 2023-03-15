@@ -33,4 +33,4 @@ class ProductoPagado(EventoProducto):
 class ProductosReservados(EventoProducto):
     id_reserva: str = None
     id_compra: uuid.UUID = None
-    evento = str = None
+    evento: str = None

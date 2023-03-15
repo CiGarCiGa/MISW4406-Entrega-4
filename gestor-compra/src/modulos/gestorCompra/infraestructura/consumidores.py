@@ -8,12 +8,14 @@ import datetime
 
 from src.modulos.gestorCompra.infraestructura.schema.v1.eventos import EventoProductosReservados
 from src.modulos.gestorCompra.infraestructura.schema.v1.comandos import ComandoReservarProducto, ComandoCrearCompra
+from src.modulos.orden.aplicacion.comandos.crear_orden import CrearOrden
 
 from src.seedwork.infraestructura import utils
 from src.modulos.gestorCompra.aplicacion.iniciar_flujo import iniciar_flujo
 from src.seedwork.aplicacion.comandos import ejecutar_commando
 from src.modulos.inventario.aplicacion.comandos.validar_inventario import ValidarInventario
 from src.modulos.inventario.aplicacion.mapeadores import MapeadorOrdenDTOJson
+from src.modulos.gestorCompra.infraestructura.dto import Compra
 
 def suscribirse_a_eventos(app=None):
     cliente = None
@@ -48,7 +50,15 @@ def suscribirse_a_eventos_productos(app=None):
             print(f'evento: {datos.evento}', flush=True)
             print(f'evento: {datos.id_compra}', flush=True)
             print(f'evento: {datos.id_reserva}', flush=True)
-
+            with app.app_context():
+                from src.config.db import db
+                compra = Compra.query.get(datos.id_compra)
+                compra.estado='PRODUCTOS_RESERVADOS'
+                compra.id_reserva_productos=datos.id_reserva
+                db.session.commit()
+            crearOrden = CrearOrden(id_compra=datos.id_compra)
+            ejecutar_commando(crearOrden)
+            print(f'Creando comando CrearOrden: {str(crearOrden)}', flush=True)
             consumidor.acknowledge(mensaje)
 
         cliente.close()

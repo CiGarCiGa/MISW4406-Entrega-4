@@ -5,6 +5,7 @@ from src.modulos.orden.dominio.entidades import Orden
 from src.modulos.orden.infraestructura.despachadores import Despachador
 from src.modulos.orden.dominio.eventos import OrdenCreada
 import random
+import uuid
 
 @dataclass
 class CrearOrden(Comando):
@@ -14,7 +15,7 @@ class CrearOrdenHandler():
     
     def handle(self, comando: CrearOrden):
         print('Crear orden handler')
-        generar_id_orden = random.randint(1,50)
+        generar_id_orden = uuid.uuid1()
         despachador = Despachador()
         evento=OrdenCreada(id_orden=generar_id_orden, id_compra=comando.id_compra)
         despachador.publicar_evento(evento, 'eventos-orden')

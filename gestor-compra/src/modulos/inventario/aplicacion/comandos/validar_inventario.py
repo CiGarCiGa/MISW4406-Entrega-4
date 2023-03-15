@@ -26,7 +26,7 @@ class ValidarInventarioHandler():
             from src.config.db import db
             productos_cantidades=comando.productos_orden
             #productos_cantidades=','.join([(w.sku + ":" + str(w.cantidad)) for w in comando.productos_orden[0].productos])
-            compra = Compra(id = id_compra, fecha_creacion = datetime.datetime.now(), fecha_actualizacion=datetime.datetime.now(), productos_cantidades=productos_cantidades)
+            compra = Compra(id = id_compra, id_usuario = comando.id, fecha_creacion = datetime.datetime.now(), fecha_actualizacion=datetime.datetime.now(), productos_cantidades=productos_cantidades, estado = 'COMPRA_CREADA')
             db.session.add(compra)
             db.session.commit()
 
@@ -35,6 +35,7 @@ class ValidarInventarioHandler():
             ,   fecha_creacion=comando.fecha_creacion
             ,   id=id_compra
             ,   productos=comando.productos_orden)
+        comando.id=id_compra
         print('antes de mapeador orden')
         mapeador = MapeadorOrden()
         orden: Orden = mapeador.dto_a_entidad(orden_dto)
