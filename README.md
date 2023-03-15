@@ -50,8 +50,7 @@ Se implementa el microservicio *Consolidador* que, para efectos de la prueba de 
 * Se implementan los microservicios utilizando flask/python
 * Se utiliza Avro para la serialización de datos 
 * Para el almacenamiento de datos, se propone una administración de los mismos híbrida, ya que los servicios *AdministrarProductos* y *ConsolidadorProductos* comparten una base de datos, mientras que *Gestorcompra* y *Ordenes* tienen cada uno su respectiva base de datos.
-* Para el BFF, se utilizó Grapghql.
-
+* Para el BFF, se utilizó Graphql. [Documentación](https://documenter.getpostman.com/view/20354032/2s93JwPi7b)
 ## Instruccion para iniciar la aplicación
 Utilizar docker-compose para levantar el sistema de la siguiente manera
 1. Descargar el repositorio
