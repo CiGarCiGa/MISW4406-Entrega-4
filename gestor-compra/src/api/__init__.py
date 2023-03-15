@@ -2,24 +2,26 @@ import os
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
 from flask_swagger import swagger
+#import asyncio
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
+tasks = list()
+
+#def registrar_handlers():
+#    import src.modulos.sagas.aplicacion
 
 def importar_modelos_alchemy():
     import src.modulos.gestorCompra.infraestructura.dto
 
 def comenzar_consumidor(app):
-    """
-    Este es un código de ejemplo. Aunque esto sea funcional puede ser un poco peligroso tener 
-    threads corriendo por si solos. Mi sugerencia es en estos casos usar un verdadero manejador
-    de procesos y threads como Celery.
-    """
-
     import threading
     import src.modulos.gestorCompra.infraestructura.consumidores as gestor
     import src.modulos.inventario.infraestructura.consumidores as gestor_inventario
     import src.modulos.orden.infraestructura.consumidores as gestor_orden
+
+    #import src.modulos.sagas.infraestructura.consumidores as saga
+    #from src.modulos.sagas.infraestructura.schema.v1.eventos import CompraIniciada
 
     # Suscripción a eventos
     threading.Thread(target=gestor.suscribirse_a_comandos, args=[app]).start()
@@ -34,6 +36,8 @@ def comenzar_consumidor(app):
 
     threading.Thread(target=gestor_orden.suscribirse_a_eventos, args=[app]).start()
     threading.Thread(target=gestor_orden.consumidor_inicio_flujo, args=[app]).start()
+
+    #asyncio.ensure_future(saga.suscribirse_a_topico("eventos-bff", "bff-cliente", CompraIniciada))
 
 def create_app(configuracion={}):
     # Init la aplicacion de Flask
@@ -54,6 +58,7 @@ def create_app(configuracion={}):
     from src.config.db import db
 
     importar_modelos_alchemy()
+    #registrar_handlers()
 
      # Importa Blueprints
     from . import gestor
@@ -62,6 +67,9 @@ def create_app(configuracion={}):
         db.create_all()
         if not app.config.get('TESTING'):
             comenzar_consumidor(app)
+
+        #from src.modulos.sagas.aplicacion.coordinadores.saga_compras import CoordinadorCompras
+        #CoordinadorCompras()
 
     # Registro de Blueprints
     #app.register_blueprint(gestor.bp)
