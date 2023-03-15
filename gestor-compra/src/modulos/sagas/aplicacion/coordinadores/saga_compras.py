@@ -43,10 +43,11 @@ class CoordinadorCompras(CoordinadorOrquestacion):
         # TODO Transforma un evento en la entrada de un comando
         # Por ejemplo si el evento que llega es ReservaCreada y el tipo_comando es PagarReserva
         # Debemos usar los atributos de ReservaCreada para crear el comando PagarReserva
-        ...
+        return locals()[tipo_comando](evento)
 
 def oir_mensaje(mensaje):
-    # TODO si es X mensaje (evento), envíe el primer comando (CrearCompra) con el payload recibido
+    # TODO si el mensaje (evento) es CompraIniciada o simplemente un evento de compra que se reciba del BFF
+    # se lanza el primer comando (CrearCompra) con el payload recibido
     if isinstance(mensaje, EventoDominio):
         coordinador = CoordinadorCompras()
         coordinador.procesar_evento(mensaje)
