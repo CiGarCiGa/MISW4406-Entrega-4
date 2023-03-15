@@ -208,6 +208,25 @@ services:
     ports:
       - "5004:5004"
 
+  # Servicio Consolidador
+  ordenes:
+    container_name: ordenes
+    hostname: ordenes
+    build:
+      context: ./ordenes/
+      dockerfile: Dockerfile
+    profiles: ["alpes", "ordenes"]
+    depends_on:
+      - broker
+    environment:
+      - AEROALPES_ADDRESS=aeroalpes
+      - PULSAR_ADDRESS=broker
+      - BROKER_HOST=broker
+    networks:
+      - pulsar
+    ports:
+      - "5040:5040"
+
   # Servicio Monitor
   monitor:
     container_name: monitor
