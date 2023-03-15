@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "9393c694-7b95-4927-98fb-39787076e7ca",
+		"name": "Entrega5",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20354032"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8003/v1",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation MyMutation {\r\n  crearCompra(domicilio: \"True\", idUsuario: \"1\", productos: \"1:1,2:3\") {\r\n    codigo\r\n    mensaje\r\n  }\r\n\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8003/v1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8003",
+					"path": [
+						"v1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
