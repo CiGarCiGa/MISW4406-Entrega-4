@@ -69,7 +69,7 @@ Utilizar docker-compose para levantar el sistema de la siguiente manera
 - Oscar: Generación de SAGA
 - Juan: realizar BBF
 
-##Despleiegue en K8s
+## Despliegue  en K8s
 Se decidió utilizar GKE para el despliegue de la solución. Para ello fue necesario:
 0. Crear y publicar imagenes Docker y en Artifactory Registry
   > docker build -t us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/admin-productos:1.0 .\admin-productos
