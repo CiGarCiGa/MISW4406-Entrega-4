@@ -99,5 +99,5 @@ Se decidió utilizar GKE para el despliegue de la solución. Para ello fue neces
 4. Desplegar de manera recursiva los manifiestos del proyecto
 > kubectl apply -f kubernetes/aeroalpes --recursive
 
-## Entrega 5 : Diagrama de lo que esta compuesto el código:
+## Entrega 5 : Diagrama del código implementado:
 ![image](https://user-images.githubusercontent.com/26679843/225499503-9f7442e3-ac1c-4426-88e8-5a1e5fb6383b.png)
