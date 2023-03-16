@@ -8,11 +8,13 @@ la infraestructura del dominio de vuelos
 from src.config.db import db
 from sqlalchemy.orm import declarative_base, relationship
 from sqlalchemy import Column, ForeignKey, Integer, Table
+from dataclasses import dataclass
 
 import uuid
 
 Base = db.declarative_base()
 
+@dataclass
 class Compra(db.Model):
     __tablename__ = "compra"
     id = db.Column(db.String(40), primary_key=True)

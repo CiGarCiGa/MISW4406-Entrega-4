@@ -44,4 +44,4 @@ spec:
       volumes:
       - name: mysql-db-gestor-compra-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-db-gestor-compra-pv-claim
+          claimName: mysql-db-gestor-compra-pv-claim2

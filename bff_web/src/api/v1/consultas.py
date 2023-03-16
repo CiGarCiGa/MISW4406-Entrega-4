@@ -4,4 +4,4 @@ from .esquemas import *
 
 @strawberry.type
 class Query:
-    compras: typing.List[Compra] = strawberry.field(resolver=obtener_compras)
+    compras: typing.List[EstadoCompra] = strawberry.field(resolver=obtener_compras)

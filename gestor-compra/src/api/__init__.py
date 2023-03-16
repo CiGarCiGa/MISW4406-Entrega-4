@@ -1,12 +1,33 @@
 import os
 
 from flask import Flask, render_template, request, url_for, redirect, jsonify, session
+from sqlalchemy import select
 from flask_swagger import swagger
 #import asyncio
 
 # Identifica el directorio base
 basedir = os.path.abspath(os.path.dirname(__file__))
 tasks = list()
+
+from sqlalchemy.ext.declarative import DeclarativeMeta
+import json
+class AlchemyEncoder(json.JSONEncoder):
+
+    def default(self, obj):
+        if isinstance(obj.__class__, DeclarativeMeta):
+            # an SQLAlchemy class
+            fields = {}
+            for field in [x for x in dir(obj) if not x.startswith('_') and x != 'metadata']:
+                data = obj.__getattribute__(field)
+                try:
+                    json.dumps(data) # this will fail on non-encodable values, like other classes
+                    fields[field] = data
+                except TypeError:
+                    fields[field] = None
+            # a json-encodable dict
+            return fields
+
+        return json.JSONEncoder.default(self, obj)
 
 #def registrar_handlers():
 #    import src.modulos.sagas.aplicacion
@@ -74,6 +95,16 @@ def create_app(configuracion={}):
     # Registro de Blueprints
     #app.register_blueprint(gestor.bp)
 
+    @app.route("/usuarios/<id>/compras")
+    def get_compras(id):
+        if not id:
+            return {"error":"El id del usuario es obligatorio"}, 400
+        with app.app_context():
+            from src.modulos.gestorCompra.infraestructura.dto import Compra
+            import json
+            print(str(type(db.session.query(Compra).filter_by(id_usuario=id).all())),flush=True)
+            return json.dumps(db.session.query(Compra).filter_by(id_usuario=id).all(),cls=AlchemyEncoder)
+
     @app.route("/spec")
     def spec():
         swag = swagger(app)
@@ -86,3 +117,4 @@ def create_app(configuracion={}):
         return {"status": "up"}
 
     return app
+

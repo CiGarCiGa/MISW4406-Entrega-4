@@ -3,11 +3,11 @@
 		"_postman_id": "9393c694-7b95-4927-98fb-39787076e7ca",
 		"name": "Entrega5",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "20354032"
+		"_exporter_id": "5836993"
 	},
 	"item": [
 		{
-			"name": "http://localhost:8003/v1",
+			"name": "CrearCompra",
 			"event": [
 				{
 					"listen": "prerequest",
@@ -25,19 +25,50 @@
 				"body": {
 					"mode": "graphql",
 					"graphql": {
-						"query": "mutation MyMutation {\r\n  crearCompra(domicilio: \"True\", idUsuario: \"1\", productos: \"1:1,2:3\") {\r\n    codigo\r\n    mensaje\r\n  }\r\n\r\n}",
+						"query": "mutation MyMutation {\r\n  crearCompra(domicilio: \"True\", idUsuario: \"1\", productos: \"1:1\") {\r\n    codigo\r\n    mensaje\r\n  }\r\n\r\n}",
 						"variables": ""
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8003/v1",
+					"raw": "http://localhost:8888/v1",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
-					"port": "8003",
+					"port": "8888",
 					"path": [
 						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ConsultarEstadoCompra",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation MyQuery {\r\n  compras( idUsuario: \"1\") {\r\n    estado\r\n    idUsuario\r\n  }\r\n\r\n}",
+						"variables": ""
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/usuarios/1/compras",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"usuarios",
+						"1",
+						"compras"
 					]
 				}
 			},

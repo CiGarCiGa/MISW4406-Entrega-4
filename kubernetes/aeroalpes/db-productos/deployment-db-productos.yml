@@ -100,9 +100,9 @@ spec:
         - name: mysql-db-productos-persistent-storage
           mountPath: /var/lib/mysql
       volumes:
-      - name: mysql-initdb-config
+      - name: mysql-initdb-productos-config
         configMap:
-          name: mysql-initdb-config
+          name: mysql-initdb-productos-config
       - name: mysql-db-productos-persistent-storage
         persistentVolumeClaim:
-          claimName: mysql-db-productos-pv-claim
+          claimName: mysql-db-productos-pv-claim2
