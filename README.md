@@ -98,3 +98,6 @@ Se decidió utilizar GKE para el despliegue de la solución. Para ello fue neces
 > helm install --set prometheus.url=http://pulsar-release-kube-promet-prometheus.pulsar prom-adapter-release prometheus-community/prometheus-adapter
 4. Desplegar de manera recursiva los manifiestos del proyecto
 > kubectl apply -f kubernetes/aeroalpes --recursive
+
+## Entrega 5 : Diagrama de lo que esta compuesto el código:
+![image](https://user-images.githubusercontent.com/26679843/225499503-9f7442e3-ac1c-4426-88e8-5a1e5fb6383b.png)
