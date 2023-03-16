@@ -59,12 +59,45 @@ Utilizar docker-compose para levantar el sistema de la siguiente manera
 3. Hacer uso de los comandos docker-compose para levantar las bases de datos
 > docker-compose --profile db up
 4. Hacer uso de los comandos los servicios faltantes
-> docker-compose --profile consolidador --profile admin-productos --profile gestor-compra up
+> docker-compose --profile consolidador --profile admin-productos --profile gestor-compra --profile ordenes up
 5. Hacer uso de los comandos docker-compose para levantar BFF
 > docker-compose --profile bff up
 
-##Distribución de trabajo:
+## Distribución de trabajo:
 - Marisela: creacion de consolidador
 - Carlos: creacion de Gestor compra, admin-productos, montar en K8
 - Oscar: Generación de SAGA
 - Juan: realizar BBF
+
+## Despliegue  en K8s
+Se decidió utilizar GKE para el despliegue de la solución. Para ello fue necesario:
+0. Crear y publicar imagenes Docker y en Artifactory Registry
+  > docker build -t us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/admin-productos:1.0 .\admin-productos
+  > docker push us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/admin-productos:1.0
+  > 
+  > docker build -t us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/monitor:1.0 .\monitor
+  > docker push us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/monitor:1.0
+  > 
+  > docker build -t us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/gestor-compra:1.0 .\gestor-compra
+  > docker push us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/gestor-compra:1.0
+  > 
+  > docker build -t us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/consolidador:1.0 .\consolidador
+  > docker push us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/consolidador:1.0
+  > 
+  > docker build -t us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/ordenes:1.0 .\ordenes
+  > docker push us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/ordenes:1.0
+  > 
+  > docker build -t us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/bff:1.0 .\bff_web
+  > docker push us-central1-docker.pkg.dev/miso-arq-no-monoliticas-380423/miso-repo/bff:1.0
+1. Crear cluster en GKE
+> PROJECT=miso-arq-no-monoliticas-380423 streamnative-charts/scripts/pulsar/gke_bootstrap_script.sh up
+2. Desplegar pulsar utilizando un paquete Helm
+> pulsar-helm-chart/scripts/pulsar/prepare_helm_release.sh -n pulsar -k pulsar-release -c
+> helm install --set proxy.ports.http=8080 --set initialize=true --set proxy.replicaCount=1 --set broker.replicaCount=1 --set bookkeeper.replicaCount=1  --set components.pulsar_manager=true --set zookeeper.volumes.data.storageClass.type=pd-standard --set zookeeper.volumes.data.storageClass.fsType=xfs --set "zookeeper.volumes.data.storageClass.provisioner=kubernetes.io/gce-pd" --namespace pulsar pulsar-release apache/pulsar
+3. Desplegar Prometheus-adapter
+> helm install --set prometheus.url=http://pulsar-release-kube-promet-prometheus.pulsar prom-adapter-release prometheus-community/prometheus-adapter
+4. Desplegar de manera recursiva los manifiestos del proyecto
+> kubectl apply -f kubernetes/aeroalpes --recursive
+
+## Entrega 5 : Diagrama de lo que esta compuesto el código:
+![image](https://user-images.githubusercontent.com/26679843/225499503-9f7442e3-ac1c-4426-88e8-5a1e5fb6383b.png)
